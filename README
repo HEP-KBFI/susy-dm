@@ -1,0 +1,6 @@
+SUSY DM calcs using micromegas
+
+12.06.2012
+A general NMSSM sampling model is implemented in micromegas_2.4.5/MSSM/main.c
+It takes input parameters from the stdin (see the code) and produces output to the stdout (see the code).
+The input can be generated for 2 scenarios currently: 3G-MSSM and GUT-MSSM. The ranges for input parameters are specified in the relevant config files.
