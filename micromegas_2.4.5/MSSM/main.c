@@ -277,14 +277,25 @@ int main(int argc,char** argv)
 	
 	double higgs_mass = 0;
 	double higgs_width = 0;
-    
+
+    //Calculate the H->gamma gamma xs and branching factor using HDECAY
     int ret=slhaWrite("slha.in");
     if(ret!=0) {
         printf("Error writing SLHA file: ret code: %d", ret);
         printf("Quitting");
         return -1;
     }
+    ret = system("../../hdecay/run");
+    if(ret!=0) {
+        printf("Error calling hdecay: %d", ret);
+        printf("Quitting");
+        return -1;
+    }
     slhaRead("slha.out",0);
+    double higgs_to_2gamma_BR = slhaBr(25, 2,22,22);
+    double higgs_width_2 = slhaWidth(25);
+    printf("Higgs->gamma gamma: %.2E\n", higgs_to_2gamma_BR);
+    printf("Higgs width: %.2E\n", higgs_width_2);
 
 //	#ifdef DEBUG
 //	int i = 0;
@@ -499,14 +510,14 @@ int main(int argc,char** argv)
 	printf("\nThis program prints its output in the following format to stdout\n");
 	printf("m0 mhf a0 tb Mtp MbMb alfSMZ sgn");
 	printf(" gmuon bsgamma deltarho bsmumu btaunu");
-	printf(" Mcdm Omega Xf Zn11 Zn12 Zn13 Zn14 Zt11 Zt12 At Ab Al mu MG1 MG2 MNE1 MNE2 MNE3 MNE4 M_A(MH3) MSt1 MSt2 MSb1 MSb2 MSeL MSmL MSl1 MSG MSuL MC1 MC2 Xe131 higgs_mass higgs_width proton_xs proton_amplitude DMname\n");
+	printf(" Mcdm Omega Xf Zn11 Zn12 Zn13 Zn14 Zt11 Zt12 At Ab Al mu MG1 MG2 MNE1 MNE2 MNE3 MNE4 M_A(MH3) MSt1 MSt2 MSb1 MSb2 MSeL MSmL MSl1 MSG MSuL MC1 MC2 Xe131 higgs_mass higgs_width proton_xs proton_amplitude DMname higgs_to_2gamma_BR\n");
 
 	printf("RESULT: ");
 	printf("%.6f %.6f %.6f %.6f %.6f %.6f %.6f %.0f ", m0, mhf, a0, tb, Mtp, MbMb, alfSMZ, sgn);
 	printf("%.3e %.3e %.3e %.3e %.3e ", v_gmuon, v_bsgnlo, v_deltarho, v_bsmumu, v_btaunu);
 
-	printf("%.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6E %.6f %.3E %.6E %.6E %s\n",
-		Mcdm, Omega, Xf, findValW("Zn11"), findValW("Zn12"), findValW("Zn13"), findValW("Zn14"), findValW("Zt11"), findValW("Zt12"), findValW("At"), findValW("Ab"), findValW("Al"), mu, findValW("MG1"), findValW("MG2"), findValW("MNE1"), findValW("MNE2"), findValW("MNE3"), findValW("MNE4"), m_a, findValW("MSt1"), findValW("MSt2"), findValW("MSb1"), findValW("MSb2"), findValW("MSeL"), findValW("MSmL"), findValW("MSl1"),findValW("MSG"),findValW("MSuL"),findValW("MC1"), findValW("MC2"),nEvents, higgs_mass, higgs_width, xs_p, amplitude_p, cdmName); 
+	printf("%.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6E %.6f %.3E %.6E %.6E %s %.6E\n",
+		Mcdm, Omega, Xf, findValW("Zn11"), findValW("Zn12"), findValW("Zn13"), findValW("Zn14"), findValW("Zt11"), findValW("Zt12"), findValW("At"), findValW("Ab"), findValW("Al"), mu, findValW("MG1"), findValW("MG2"), findValW("MNE1"), findValW("MNE2"), findValW("MNE3"), findValW("MNE4"), m_a, findValW("MSt1"), findValW("MSt2"), findValW("MSb1"), findValW("MSb2"), findValW("MSeL"), findValW("MSmL"), findValW("MSl1"),findValW("MSG"),findValW("MSuL"),findValW("MC1"), findValW("MC2"),nEvents, higgs_mass, higgs_width, xs_p, amplitude_p, cdmName, higgs_to_2gamma_BR); 
    
 	return 0;
 }
