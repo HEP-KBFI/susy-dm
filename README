@@ -1,5 +1,8 @@
 SUSY DM calcs using micromegas
 
+13.06.2012
+Added a few lines to main.c that use hdecay to calculate higgs->gamma gamma branching ratio. Expects the hdecay runtime to be present in ./hdecay/run
+
 12.06.2012
 A general NMSSM sampling model is implemented in micromegas_2.4.5/MSSM/main.c
 It takes input parameters from the stdin (see the code) and produces output to the stdout (see the code).
