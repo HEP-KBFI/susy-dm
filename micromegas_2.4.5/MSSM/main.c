@@ -69,7 +69,7 @@
 /* #define SHOWPLOTS */
      /* Display  graphical plots on the screen */ 
 
-//#define DEBUG
+#define DEBUG
 
 /*===== End of DEFINE  settings ===== */
 
@@ -99,23 +99,23 @@
 #define PRINTRGE(A)  PRINTRGE_(A)
 
 
-int runSuspect() {
-  char buff[2000];
-  int err;
-
-  if(!access(FIN, R_OK)) unlink(FIN);
-
-  sprintf(buff,"%s/suspect.exe",SUSPECT);
-  if(access( buff,X_OK))
-  { printf("Executable \n %s\n is not found. Program stops.\n",buff);
-    exit(13);
-  }  
-  
-  err=System(buff);   
-  if(err>=0)  err=slhaRead(FOUT,0); else cleanSLHAdata();   
-  if(delFiles){unlink(FIN);unlink(FOUT);unlink("suspect2.out"); }
-  return err;
-}
+//int runSuspect() {
+//  char buff[2000];
+//  int err;
+//
+//  if(!access(FIN, R_OK)) unlink(FIN);
+//
+//  sprintf(buff,"%s/suspect.exe",SUSPECT);
+//  if(access( buff,X_OK))
+//  { printf("Executable \n %s\n is not found. Program stops.\n",buff);
+//    exit(13);
+//  }  
+//  
+//  err=System(buff);   
+//  if(err>=0)  err=slhaRead(FOUT,0); else cleanSLHAdata();   
+//  if(delFiles){unlink(FIN);unlink(FOUT);unlink("suspect2.out"); }
+//  return err;
+//}
 
 typedef struct{
 	double u;
@@ -164,12 +164,19 @@ int is_in_bounds(bounds* b, int n_bounds, const char* name, double val) {
 }
 
 void check_value(bounds* b, int n_bounds, const char* name, const double value) {
-	if (is_in_bounds(b, n_bounds, name, value) == 0) {
+
+    int ret = is_in_bounds(b, n_bounds, name, value);	
+    if (ret == 0) { //value is outside limits
 		printf("%s outside limits: %.2E\n", name, value);
 		#ifndef DEBUG
 		exit(1);
 		#endif
 	}
+    else if(ret == -1) { //Bounds not specified for value
+		#ifndef DEBUG
+		exit(1);
+		#endif
+    }
 }
 
 int main(int argc,char** argv)
@@ -204,26 +211,28 @@ int main(int argc,char** argv)
 	double gMG1, gMG2, gMG3,  gAl, gAt, gAb,  sgn, gMHu,  gMHd,
 		gMl2, gMl3, gMr2, gMr3, gMq2, gMq3, gMu2, gMu3, gMd2, gMd3;
         
-	printf("This program accepts input from the standard input in the following format:\n");
-	printf("m0 mhf a0 tb Mtp MbMb alfSMZ sgn\n");
-	printf("example: .\\main < sample.txt\n");
+//	printf("This program accepts input from the standard input in the following format:\n");
+//	printf("m0 mhf a0 tb Mtp MbMb alfSMZ sgn\n");
+//	printf("example: .\\main < sample.txt\n");
+    printf("This program expects input from the stdin in th efollowing format:\ntb Mtp MbMb alfSMZ sgn gMG1 gMG2 gMG3 gAl gAt gAb gMHu gMHd gMl2 gMl3 gMr2 gMr3 gMq2 gMq3 gMu2 gMu3 gMd2 gMd3\n");
+
  
 	printf("\n\n\n========= mSUGRA scenario =====\n");
 	PRINTRGE(RGE);
 	double Mtp,MbMb,alfSMZ;
 	
 	int input_result = 0;
-	#ifndef DEBUG	
+	//#ifndef DEBUG	
 	//input_result = scanf("%lf %lf %lf %lf %lf %lf %lf %lf", &m0, &mhf, &a0, &tb, &Mtp, &MbMb, &alfSMZ, &sgn);
-  input_result = scanf("%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",
-                      &tb, &Mtp, &MbMb, &alfSMZ, &sgn,
-                      &gMG1, &gMG2, &gMG3,
-                      &gAl, &gAt, &gAb,
-                      &gMHu, &gMHd,
-                      &gMl2, &gMl3, &gMr2 ,&gMr3,
-                      &gMq2, &gMq3, &gMu2, &gMu3, &gMd2, &gMd3); //23 parameters in total	
+    input_result = scanf("%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",
+                           &tb, &Mtp, &MbMb, &alfSMZ, &sgn,
+                           &gMG1, &gMG2, &gMG3,
+                           &gAl, &gAt, &gAb,
+                           &gMHu, &gMHd,
+                           &gMl2, &gMl3, &gMr2 ,&gMr3,
+                           &gMq2, &gMq3, &gMu2, &gMu3, &gMd2, &gMd3); //23 parameters in total	
 
-  #endif
+    //#endif
 	
 	//#ifdef DEBUG
 	//input_result = sscanf("120 500 -350 10 173.1 160.0 0.1 1.0", "%lf %lf %lf %lf %lf %lf %lf %lf", &m0, &mhf, &a0, &tb, &Mtp, &MbMb, &alfSMZ, &sgn);
@@ -519,5 +528,6 @@ int main(int argc,char** argv)
 	printf("%.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6E %.6f %.3E %.6E %.6E %s %.6E\n",
 		Mcdm, Omega, Xf, findValW("Zn11"), findValW("Zn12"), findValW("Zn13"), findValW("Zn14"), findValW("Zt11"), findValW("Zt12"), findValW("At"), findValW("Ab"), findValW("Al"), mu, findValW("MG1"), findValW("MG2"), findValW("MNE1"), findValW("MNE2"), findValW("MNE3"), findValW("MNE4"), m_a, findValW("MSt1"), findValW("MSt2"), findValW("MSb1"), findValW("MSb2"), findValW("MSeL"), findValW("MSmL"), findValW("MSl1"),findValW("MSG"),findValW("MSuL"),findValW("MC1"), findValW("MC2"),nEvents, higgs_mass, higgs_width, xs_p, amplitude_p, cdmName, higgs_to_2gamma_BR); 
    
+    slhaWrite("out.slha");
 	return 0;
 }
