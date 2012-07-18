@@ -8,7 +8,7 @@ import subprocess
 import os
 import shutil
 
-N = 100
+N = 1000000
 modelname = "NMSSM"
 
 def call(infile):
