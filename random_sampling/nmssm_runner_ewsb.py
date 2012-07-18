@@ -50,7 +50,7 @@ if __name__=="__main__":
     good_points = []
 
     if not fromFile:
-        for i in range(1):
+        for i in range(N):
             s = random_sampling.sample(conf)
             prepare_input_file(s)
             (out, retcode) = call("par.dat")
