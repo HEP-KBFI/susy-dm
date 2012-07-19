@@ -10,9 +10,20 @@ def getParticle(slha, id_n, block):
     else:
         raise Exception("Error parsing SLHA block %s for PDG id %d" % (block, id_n))
 
+def getWarnings(slha):
+    warns = filter(lambda x: int(x[0])==3, slha["SPINFO"])
+    os = ""
+    for w in warns:
+        os += ":".join(w) + ";"
+    return os[:-1]
+
 class ModelPoint(IsDescription):
+    warnings = StringCol(1000)
     h1_mass = Float32Col()
+    h2_mass = Float32Col()
     n1_mass = Float32Col()
+    run_id = Int32Col()
+    n_warnings = Int32Col()
 
 h5file = openFile("tutorial1.h5", mode = "w", title = "Test file")
 table = h5file.createTable("/", "modelPoint", ModelPoint)
@@ -25,13 +36,37 @@ masses = []
 for f in files:
     s = slhautil.readSLHA(f)
 
+    run_id = int(f[f.index("_")+1:f.index(".dat")])
+
     point["h1_mass"] = getParticle(s,25, "MASS")
+    point["h2_mass"] = getParticle(s,35, "MASS")
     point["n1_mass"] = getParticle(s, 1000022, "MASS")
+    warns = getWarnings(s)
+    point["warnings"] = warns
+    point["run_id"] = run_id
+    point["n_warnings"] = warns.count("3")
+
     point.append()
 
 table.flush()
 
-out = [(x["h1_mass"], x["n1_mass"]) for x in table.where("(h1_mass>124.0) & (h1_mass<126.0)")]
+out = [(x["run_id"], x["h1_mass"], x["n1_mass"], x["warnings"].split(";")) for x in table.where("(h1_mass>124.0) & (h1_mass<126.0)")]
+
+no_warns = numpy.array([(x["run_id"], x["h1_mass"], x["n1_mass"]) for x in table.where("n_warnings<9")])
+
+h1_masses = no_warns[:,1]
+n1_masses = no_warns[:,2]
+
+import matplotlib.pyplot as plt
+
+plt.scatter(h1_masses, n1_masses)
+plt.ylabel("neutralino(1) mass (GeV)")
+plt.xlabel("higgs(1) mass (GeV)")
+plt.xlim(100,130)
+plt.ylim(0,2000)
+plt.title("NMSSM output points")
+plt.show()
+plt.savefig("/home/joosep/web/nmssm.png")
 
 #[['25', '1.13418412E+02', ' lightest neutral scalar'],
 # ['35', '5.43710780E+03', ' second neutral scalar'],

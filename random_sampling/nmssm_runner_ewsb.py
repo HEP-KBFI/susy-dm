@@ -28,7 +28,6 @@ def prepare_input_file(parameters, of="par.dat"):
 def save_output(d, output, ofdir="out"):
     if not os.path.exists(ofdir):
         os.makedirs(ofdir)
-    shutil.move("par.dat", "%s/par_%d.dat" % (ofdir, d))
     shutil.move("spectr.dat", "%s/spectr_%d.dat" % (ofdir, d))
     shutil.move("decay.dat", "%s/decay_%d.dat" % (ofdir, d))
     of = open("%s/out_%d.dat" % (ofdir, d), "w")
@@ -40,7 +39,8 @@ def save_output(d, output, ofdir="out"):
 if __name__=="__main__":
 
     fromFile = False
-    saveGood = True
+    saveGood = False
+    ofdir = "out"
 
     if not fromFile:
         conf = random_sampling.read_parameters("./sampling_NMSSM_EWSB.cfg")
@@ -48,16 +48,19 @@ if __name__=="__main__":
         pointFile = open("good.txt")
 
     good_points = []
+    if not os.path.exists(ofdir):
+        os.makedirs(ofdir)
 
     if not fromFile:
         for i in range(N):
             s = random_sampling.sample(conf)
             prepare_input_file(s)
             (out, retcode) = call("par.dat")
+            shutil.move("par.dat", "%s/par_%d.dat" % (ofdir, i))
             print "%d %d %s" % (i, retcode, out[-1][:-1])
             if retcode==0:
-                save_output(i, out)
-                good_points.append(s)
+                save_output(i, out, ofdir=ofdir)
+                #good_points.append(s)
 
     if fromFile:
         i = 0
