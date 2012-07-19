@@ -1,5 +1,16 @@
 SUSY DM calcs using micromegas
 
+19.07.2012
+Parameters for NMSSM:
+aLmbdQ, aKappQ, LambdQ, KappaQ, mu <- Higgs sector parameters
+
+MG1,2,3 < Gaugino masses
+Ml2,3; Mr2,3 <- left and right handed slepton masses
+Mq2,3 <- left handed squark masses
+Mu2,3 <- right handed up-type squark masses
+Md2,3 <- right handed down-type squark masses
+Au,d,t,b,l <- ???
+
 18.07.2012
 Preparing to run NMSSM EWSB. Specifiying low-energy parameters and running using random_sampling/nmssm_runner_ewsb.py. Approximate output size per successful point is ~~40KB. Time per point is about 1/3 sec.
 NMSSM parameter specifications are the following (for NMSSM/sampling_NMSSM_EWSB.cfg):
