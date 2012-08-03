@@ -62,8 +62,8 @@ def runWithSeed(s):
 
 if __name__=="__main__":
 
-	seeds = [long(os.urandom(8).encode("hex"), 16) for i in range(100)]
-	pool = multiprocessing.Pool(12)
+	seeds = [long(os.urandom(2).encode("hex"), 16) for i in range(100)]
+	pool = multiprocessing.Pool(8)
 	ret = pool.map(runWithSeed, seeds)
 	print ""
 	print ret
