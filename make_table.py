@@ -5,6 +5,7 @@ import sys
 NMSSMPoint = {
 				"h1_mass": tables.Float32Col(),
 				"chi1_mass": tables.Float32Col(),
+				"PROB": tables.BoolCol(),
 }
 NProb = 54
 
@@ -28,8 +29,14 @@ if __name__=="__main__":
 
 			point["h1_mass"] = line_data[11]
 			point["chi1_mass"] = line_data[22]
+			prob = False
 			for i in range(1,NProb):
-				point["PROB%d"%i] = bool(line_data[26+i])
+				p = bool(line_data[26+i])
+				point["PROB%d"%i] = p
+				if p: prob=True
+			point["PROB"] = prob #Set to True if any of PROB1-53 is True
+
+
 			point.append()
 		h5file.close()
 		f.close()
