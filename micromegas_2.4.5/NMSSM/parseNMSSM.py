@@ -52,7 +52,7 @@ table.flush()
 
 out = [(x["run_id"], x["h1_mass"], x["n1_mass"], x["warnings"].split(";")) for x in table.where("(h1_mass>124.0) & (h1_mass<126.0)")]
 
-no_warns = numpy.array([(x["run_id"], x["h1_mass"], x["n1_mass"]) for x in table.where("n_warnings<9")])
+no_warns = numpy.array([(x["run_id"], x["h1_mass"], x["n1_mass"]) for x in table.where("n_warnings==0")])
 
 h1_masses = no_warns[:,1]
 n1_masses = no_warns[:,2]
