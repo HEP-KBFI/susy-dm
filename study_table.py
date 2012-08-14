@@ -52,7 +52,7 @@ def eval_density(points_x, points_y):
 	density_points_for_calc = density_points[:,0:1000000]
 	logging.debug("Preparing KDE")
 	gkde = scipy.stats.kde.gaussian_kde(density_points_for_calc)
-	logging.debug("Evaluating KDE over grid on %d points"% len(evalpoints.T))
+	logging.debug("Evaluating KDE over grid on %d points with %d data points"% (len(evalpoints.T), len(density_points_for_calc.T))
 	densities = gkde.evaluate(evalpoints)
 	densities = numpy.reshape(densities.T, x.shape)
 
