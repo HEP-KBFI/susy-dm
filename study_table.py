@@ -15,12 +15,13 @@ logging.basicConfig(level=logging.DEBUG)
 def chi_h_points(selection, recreate=True):
 	logger = logging
 	logger.debug("Starting to get chi1/h1 points")
-	li = t.getWhereList(selection)
-	sel = t.readCoordinates(li)
-	l = len(li)
+	
 
 	if recreate:
 		logger.debug("Recreating file")
+		li = t.getWhereList(selection)
+		sel = t.readCoordinates(li)
+		l = len(li)
 		tempfile = tables.openFile("temp.h5", mode="w")
 		filters = tables.Filters(complevel=9, complib='zlib', fletcher32=True)
 		chi1_h1_arr = tempfile.createCArray(tempfile.root,'chi1_h1',tables.Float32Atom(),shape=(l,2), filters=filters)
@@ -39,7 +40,7 @@ def chi_h_points(selection, recreate=True):
 m_low = 123
 m_high = 129
 
-def eval_density(points_x, points_y):
+def eval_density(points_x, points_y, max_data_points=1000):
 	logging.debug("Starting to evaluate density with KDE")
 	xlow, xhigh = 0,500
 	ylow, yhigh = 100,130
@@ -49,10 +50,10 @@ def eval_density(points_x, points_y):
 	evalpoints = numpy.vstack([x.ravel(), y.ravel()])
 	logging.debug("Preparing data points for evaluation")
 	density_points = numpy.vstack([points_x.T, points_y.T])
-	density_points_for_calc = density_points[:,0:1000000]
+	density_points_for_calc = density_points[:,0:max_data_points]
 	logging.debug("Preparing KDE")
 	gkde = scipy.stats.kde.gaussian_kde(density_points_for_calc)
-	logging.debug("Evaluating KDE over grid on %d points with %d data points"% (len(evalpoints.T), len(density_points_for_calc.T))
+	logging.debug("Evaluating KDE over grid on %d points with %d data points"% (len(evalpoints.T), len(density_points_for_calc.T)))
 	densities = gkde.evaluate(evalpoints)
 	densities = numpy.reshape(densities.T, x.shape)
 
@@ -60,26 +61,6 @@ def eval_density(points_x, points_y):
 	densities = numpy.log(densities)
 	logging.debug("Done evaluating density")
 	return (x,y,density_points_for_calc, densities)
-
-if __name__=="__main__":
-	logging.debug("Getting data points")
-	((chi1, h1), tempfile) = chi_h_points("h1_mass>0")
-	logging.debug("Calculating density")
-	(x,y, density_points_for_calc, densities) = eval_density(chi1, h1)
-	fig = plt.figure()
-	ax1 = fig.add_subplot(111)
-	xlow, xhigh = min(chi1)-10,max(chi1)+10
-	ylow, yhigh = 123,129
-	plt.xlim(xlow, xhigh)
-	plt.ylim(ylow, yhigh)
-	logging.debug("Plotting density contours")
-	ax1.contour(x,y, densities, 5)
-	logging.debug("Plotting scatterpoints")
-	ax1.scatter(density_points_for_calc[0], density_points_for_calc[1], c="k", alpha=0.1, s=10.0)
-	plt.ylabel("Higgs mass GeV/c**2")
-	plt.xlabel("chi0 mass GeV/c**2")
-	plt.suptitle("NMSSM parameter scan")
-	plt.show()
 
 def points(sel):
 	#A = [(x["h1_mass"], x["chi1_mass"]) for x in t.where(sel)]
@@ -138,6 +119,30 @@ def draw_with_excl(excl=None, tag=None):
 	ax1.scatter(map(lambda x: x[0], A), map(lambda x: x[1], A), s=10.0, marker="o", c="b", alpha=0.05)
 	plt.show()
 	#plt.savefig("/home/joosep/web/nmssm_%s.png"%tag)
+
+
+if __name__=="__main__":
+	logging.debug("Getting data points")
+	((chi1, h1), tempfile) = chi_h_points("(PROB==0)|(PROB30!=0)", True)
+	logging.debug("Calculating density")
+	(x,y, density_points_for_calc, densities) = eval_density(chi1, h1, max_data_points=100000)
+	fig = plt.figure()
+	ax1 = fig.add_subplot(111)
+	xlow, xhigh = min(chi1)-10,max(chi1)+10
+	ylow, yhigh = 123,129
+	plt.xlim(xlow, xhigh)
+	plt.ylim(ylow, yhigh)
+	logging.debug("Plotting density contours")
+	ax1.contour(x,y, densities, 5)
+	logging.debug("Plotting scatterpoints")
+	ax1.plot(density_points_for_calc[0], density_points_for_calc[1], "o", c="k", alpha=0.3)
+	plt.ylabel("Higgs mass GeV/c**2")
+	plt.xlabel("chi0 mass GeV/c**2")
+	plt.suptitle("NMSSM parameter scan")
+	plt.savefig("nmssm.png")
+	logging.debug("Showing plot")
+	plt.show()
+
 
 #draw_with_excl(excl=[30], tag="allowed_wmap")
 #r = range(1,54)

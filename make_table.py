@@ -16,7 +16,7 @@ for i in range(1,NProb):
 if __name__=="__main__":
     h5file = tables.openFile("nmssm1.h5", mode = "w", title = "SUSY parameter space points")
     group = h5file.createGroup("/", 'NMSSM1', 'NMSSM points')
-    filters = tables.Filters(complevel=5, complib='blosc', fletcher32=True)
+    filters = tables.Filters(complevel=5, complib='blosc', fletcher32=False)
     table = h5file.createTable(group, 'parspace', NMSSMPoint, "parameter space")
     point = table.row
     files = glob.glob(sys.argv[1])
