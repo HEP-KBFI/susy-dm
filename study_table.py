@@ -4,11 +4,33 @@ import matplotlib.pyplot as plt
 import matplotlib.cm
 import numpy
 
-h5file = tables.openFile("nmssm1.h5", mode = "r")
+h5file = tables.openFile("/Users/joosep/Desktop/nmssm1.h5", mode = "r")
 t = h5file.root.NMSSM1.parspace
+
+l = t.nrows
+tempfile = tables.openFile("temp.h5", mode="w")
+chi1_arr = tempfile.createCArray(tempfile.root,'chi1',tables.Float32Atom(),shape=(l,1))
+h1_arr = tempfile.createCArray(tempfile.root,'h1',tables.Float32Atom(),shape=(l,1))
+for x in xrange(l):
+	chi1_arr[x,0] = t[x]["chi1_mass"]
+	h1_arr[x,0] = t[x]["h1_mass"]
+	tempfile.flush()
 
 m_low = 123
 m_high = 129
+
+def points(sel):
+	#A = [(x["h1_mass"], x["chi1_mass"]) for x in t.where(sel)]
+	
+	l = len(t.getWhereList(sel))
+	arr = numpy.empty((2,l))
+
+	i=0
+	for x in t.where(sel):
+		arr[0,i] = x["h1_mass"]
+		arr[1,i] = x["chi1_mass"]
+		i += 1
+	return arr
 
 def get_points_with_sel(sel, step=1):
     s = t.where(sel, step=step)
@@ -53,11 +75,13 @@ def draw_with_excl(excl=None, tag=None):
 	A = get_points_with_sel("(h1_mass>0)&"+not_excluded(excl), step=s)
 	ax1.scatter(map(lambda x: x[0], A), map(lambda x: x[1], A), s=10.0, marker="o", c="b", alpha=0.05)
 	plt.show()
-	plt.savefig("/home/joosep/web/nmssm_%s.png"%tag)
+	#plt.savefig("/home/joosep/web/nmssm_%s.png"%tag)
 
-draw_with_excl(excl=[30], tag="allowed_wmap")
-r = range(1,54)
-draw_with_excl(excl=r, tag="")
+#draw_with_excl(excl=[30], tag="allowed_wmap")
+#r = range(1,54)
+#draw_with_excl(excl=r, tag="")
+
+
 #def probs(x):
 #    ret = []
 #    for i in range(1,54):

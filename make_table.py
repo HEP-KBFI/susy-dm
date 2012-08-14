@@ -5,6 +5,7 @@ import sys
 NMSSMPoint = {
                 "h1_mass": tables.Float32Col(),
                 "chi1_mass": tables.Float32Col(),
+                "omg": tables.Float32Col(),
                 "PROB": tables.BoolCol(),
 }
 NProb = 54
@@ -15,6 +16,7 @@ for i in range(1,NProb):
 if __name__=="__main__":
     h5file = tables.openFile("nmssm1.h5", mode = "w", title = "SUSY parameter space points")
     group = h5file.createGroup("/", 'NMSSM1', 'NMSSM points')
+    filters = tables.Filters(complevel=5, complib='blosc', fletcher32=True)
     table = h5file.createTable(group, 'parspace', NMSSMPoint, "parameter space")
     point = table.row
     files = glob.glob(sys.argv[1])
@@ -35,6 +37,7 @@ if __name__=="__main__":
 
             point["h1_mass"] = line_data[11]
             point["chi1_mass"] = line_data[22]
+            point["omg"] = line_data[26]
             prob = False
             for i in range(1,NProb):
                 p = bool(line_data[26+i])
