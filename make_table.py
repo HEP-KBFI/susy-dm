@@ -17,12 +17,12 @@ for i in range(1,NProb):
 def process_line(point, line):
     try:
         line_data = map(float, line.split())
-    except ValueError, e:
+    except ValueError:
         print "bad line in %s" % fn
-        continue
+        return
 
     if not len(line_data)==80:
-        continue
+        return
 
     point["h1_mass"] = line_data[11]
     point["chi1_mass"] = line_data[22]
