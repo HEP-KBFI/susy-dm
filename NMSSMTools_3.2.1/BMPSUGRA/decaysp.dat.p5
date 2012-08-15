@@ -1,0 +1,152 @@
+# HIGGS + TOP BRANCHING RATIOS IN SLHA FORMAT
+# Info about decay package
+BLOCK DCINFO   # Program information
+     1   NMSSMTools # Decay package
+     2   3.2.0      # Version number
+#           PDG          Width
+DECAY        25     2.53915635E-03   # Lightest neutral Higgs scalar
+     9.23562012E-03    2          21        21   # BR(H_1 -> gluon gluon)
+     3.16167566E-04    2          13       -13   # BR(H_1 -> muon muon)
+     8.92566291E-02    2          15       -15   # BR(H_1 -> tau tau)
+     6.87897357E-04    2           3        -3   # BR(H_1 -> s sbar)
+     7.91954876E-03    2           4        -4   # BR(H_1 -> c cbar)
+     8.90792827E-01    2           5        -5   # BR(H_1 -> b bbar)
+     0.00000000E+00    2           6        -6   # BR(H_1 -> t tbar)
+     1.31893955E-03    2          24       -24   # BR(H_1 -> W+ W-)
+     1.01702126E-05    2          23        23   # BR(H_1 -> Z Z)
+     4.52183073E-04    2          22        22   # BR(H_1 -> gamma gamma)
+     1.00170333E-05    2          23        22   # BR(H_1 -> Z gamma)
+DECAY        35     9.37526739E-03   # 2nd neutral Higgs scalar
+     1.06363516E-02    2          21        21   # BR(H_2 -> gluon gluon)
+     3.17430556E-04    2          13       -13   # BR(H_2 -> muon muon)
+     8.96620928E-02    2          15       -15   # BR(H_2 -> tau tau)
+     6.67290028E-04    2           3        -3   # BR(H_2 -> s sbar)
+     7.07445769E-03    2           4        -4   # BR(H_2 -> c cbar)
+     8.65337493E-01    2           5        -5   # BR(H_2 -> b bbar)
+     0.00000000E+00    2           6        -6   # BR(H_2 -> t tbar)
+     2.35094170E-02    2          24       -24   # BR(H_2 -> W+ W-)
+     1.95719287E-03    2          23        23   # BR(H_2 -> Z Z)
+     6.14070682E-04    2          22        22   # BR(H_2 -> gamma gamma)
+     2.24204091E-04    2          23        22   # BR(H_2 -> Z gamma)
+DECAY        45     1.23296322E-01   # 3rd neutral Higgs scalar
+     2.38550381E-03    2          21        21   # BR(H_3 -> gluon gluon)
+     2.78500560E-04    2          13       -13   # BR(H_3 -> muon muon)
+     7.87251788E-02    2          15       -15   # BR(H_3 -> tau tau)
+     5.35429844E-04    2           3        -3   # BR(H_3 -> s sbar)
+     4.92809565E-04    2           4        -4   # BR(H_3 -> c cbar)
+     7.06278825E-01    2           5        -5   # BR(H_3 -> b bbar)
+     0.00000000E+00    2           6        -6   # BR(H_3 -> t tbar)
+     1.75824364E-01    2          24       -24   # BR(H_3 -> W+ W-)
+     6.04735094E-03    2          23        23   # BR(H_3 -> Z Z)
+     9.64951435E-06    2          22        22   # BR(H_3 -> gamma gamma)
+     5.67017945E-05    2          23        22   # BR(H_3 -> Z gamma)
+     2.93656864E-02    2     1000022   1000022   # BR(H_3 -> neu_1 neu_1)
+DECAY        36     2.28799190E-04   # Lightest pseudoscalar
+     8.40507197E-04    2          21        21   # BR(A_1 -> gluon gluon)
+     3.34917333E-04    2          13       -13   # BR(A_1 -> muon muon)
+     9.46942757E-02    2          15       -15   # BR(A_1 -> tau tau)
+     6.85772626E-04    2           3        -3   # BR(A_1 -> s sbar)
+     1.58997068E-04    2           4        -4   # BR(A_1 -> c cbar)
+     9.03284601E-01    2           5        -5   # BR(A_1 -> b bbar)
+     0.00000000E+00    2           6        -6   # BR(A_1 -> t tbar)
+     9.22804113E-07    2          22        22   # BR(A_1 -> gamma gamma)
+     5.86603588E-09    2          23        22   # BR(A_1 -> Z gamma)
+DECAY        46     1.23424744E-01   # 2nd pseudoscalar
+     4.38523931E-04    2          21        21   # BR(A_2 -> gluon gluon)
+     3.04454866E-04    2          13       -13   # BR(A_2 -> muon muon)
+     8.60958001E-02    2          15       -15   # BR(A_2 -> tau tau)
+     5.90754608E-04    2           3        -3   # BR(A_2 -> s sbar)
+     9.50360377E-05    2           4        -4   # BR(A_2 -> c cbar)
+     7.77139773E-01    2           5        -5   # BR(A_2 -> b bbar)
+     0.00000000E+00    2           6        -6   # BR(A_2 -> t tbar)
+     6.24994543E-06    2          22        22   # BR(A_2 -> gamma gamma)
+     4.54639558E-08    2          23        22   # BR(A_2 -> Z gamma)
+     1.35329362E-01    2     1000022   1000022   # BR(A_2 -> neu_1 neu_1)
+DECAY        37     2.78591566E-02   # Charged Higgs
+     1.49775156E-03    2         -13        14   # BR(H+ -> muon nu_muon)
+     4.23561326E-01    2         -15        16   # BR(H+ -> tau nu_tau)
+     1.34036362E-04    2           2        -3   # BR(H+ -> u sbar)
+     2.90251401E-03    2           4        -3   # BR(H+ -> c sbar)
+     5.81463315E-05    2           2        -5   # BR(H+ -> u bbar)
+     5.82210051E-03    2           4        -5   # BR(H+ -> c bbar)
+     5.46378515E-01    2           6        -5   # BR(H+ -> t bbar)
+     1.96456101E-02    2          24        25   # BR(H+ -> W+ H_1)
+DECAY         6     1.33482521E+00   # Top Quark
+     1.00000000E+00    2           5        24   # BR(t ->  b    W+)
+#         PDG            Width
+DECAY        24     2.08500000E+00   # W+ (measured)
+     1.16500000E-01    2         -11        12   # BR(W+ -> e+ nu_e)
+     1.16500000E-01    2         -13        14   # BR(W+ -> mu+ nu_mu)
+     1.12000000E-01    2         -15        16   # BR(W+ -> tau+ nu_tau)
+     3.65000000E-01    2           2        -1   # BR(W+ -> u db)
+     3.10000000E-01    2           4        -3   # BR(W+ -> c sb)
+#         PDG            Width
+DECAY        23     2.49520000E+00   # Z (measured)
+     2.00000000E-01    2         -12        12   # BR(Z -> invisible)
+     3.36500000E-02    2         -11        11   # BR(Z -> e+ e-)
+     3.36500000E-02    2         -13        13   # BR(Z -> mu+ mu-)
+     3.37000000E-02    2         -15        15   # BR(Z -> tau+ tau-)
+     1.11000000E-01    2           2        -2   # BR(Z -> u ub)
+     1.58500000E-01    2           1        -1   # BR(Z -> d db)
+     1.58500000E-01    2           3        -3   # BR(Z -> s sb)
+     1.20000000E-01    2           4        -4   # BR(Z -> c cb)
+     1.51000000E-01    2           5        -5   # BR(Z -> b bb)
+#         PDG            Width
+DECAY   1000024     0.00000000E+00   # chargino1
+#         PDG            Width
+DECAY   1000037     0.00000000E+00   # chargino2
+#         PDG            Width
+DECAY   1000022     0.00000000E+00   # neutralino1
+#         PDG            Width
+DECAY   1000023     0.00000000E+00   # neutralino2
+#         PDG            Width
+DECAY   1000025     0.00000000E+00   # neutralino3
+#         PDG            Width
+DECAY   1000035     0.00000000E+00   # neutralino4
+#         PDG            Width
+DECAY   1000045     0.00000000E+00   # neutralino5
+#                    neutralino5 2-body decays
+#         PDG            Width
+DECAY   1000021     0.00000000E+00   # gluino
+#         PDG            Width
+DECAY   1000011     0.00000000E+00   # selectron_L
+#         PDG            Width
+DECAY   2000011     0.00000000E+00   # selectron_R
+#         PDG            Width
+DECAY   1000013     0.00000000E+00   # smuon_L
+#         PDG            Width
+DECAY   2000013     0.00000000E+00   # smuon_R
+#         PDG            Width
+DECAY   1000015     0.00000000E+00   # stau_1
+#         PDG            Width
+DECAY   2000015     0.00000000E+00   # stau_2
+#         PDG            Width
+DECAY   1000012     0.00000000E+00   # snu_eL
+#         PDG            Width
+DECAY   1000014     0.00000000E+00   # snu_muL
+#         PDG            Width
+DECAY   1000016     0.00000000E+00   # snu_tauL
+#         PDG            Width
+DECAY   1000002     0.00000000E+00   # sup_L
+#         PDG            Width
+DECAY   2000002     0.00000000E+00   # sup_R
+#         PDG            Width
+DECAY   1000001     0.00000000E+00   # sdown_L
+#         PDG            Width
+DECAY   2000001     0.00000000E+00   # sdown_R
+#         PDG            Width
+DECAY   1000004     0.00000000E+00   # scharm_L
+#         PDG            Width
+DECAY   2000004     0.00000000E+00   # scharm_R
+#         PDG            Width
+DECAY   1000003     0.00000000E+00   # sstrange_L
+#         PDG            Width
+DECAY   2000003     0.00000000E+00   # sstrange_R
+#         PDG            Width
+DECAY   1000006     0.00000000E+00   # stop1
+#         PDG            Width
+DECAY   2000006     0.00000000E+00   # stop2
+#         PDG            Width
+DECAY   1000005     0.00000000E+00   # sbottom1
+#         PDG            Width
+DECAY   2000005     0.00000000E+00   # sbottom2
