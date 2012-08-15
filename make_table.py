@@ -49,7 +49,7 @@ def process_line(point, line):
     point["h1_mass"] = line_data[11]
     point["chi1_mass"] = line_data[22]
     point["omg"] = line_data[26]
-    
+
     prob = False
     for i in range(1,NProb):
         p = bool(line_data[26+i])
@@ -72,7 +72,7 @@ if __name__=="__main__":
         f = open(fn, "r")
         lines = True
         while lines:
-            lines = f.readlines(sizehint=10000000)
+            lines = f.readlines(10000000)
             for line in lines:
                 process_line(point, line)
         f.close()
