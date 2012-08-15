@@ -123,9 +123,9 @@ def draw_with_excl(excl=None, tag=None):
 
 if __name__=="__main__":
 	logging.debug("Getting data points")
-	((chi1, h1), tempfile) = chi_h_points("(PROB==0)|(PROB30!=0)", True)
+	((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
 	logging.debug("Calculating density")
-	(x,y, density_points_for_calc, densities) = eval_density(chi1, h1, max_data_points=100000)
+	(x,y, density_points_for_calc, densities) = eval_density(chi1, h1, max_data_points=1000000)
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
 	xlow, xhigh = min(chi1)-10,max(chi1)+10
