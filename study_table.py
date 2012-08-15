@@ -12,6 +12,20 @@ h5file = tables.openFile("/Users/joosep/Desktop/nmssm1.h5", mode = "r")
 t = h5file.root.NMSSM1.parspace
 logging.basicConfig(level=logging.DEBUG)
 
+def get_points(selection, variable, tempfile, selname):
+	logging.debug("Starting to get %s points with selection %s"% (variable, selection))
+	li = t.getWhereList(selection)
+	l = len(li)
+	logging.debug("%d points in selection" % l)
+	sel = t.readCoordinates(li)
+	filters = tables.Filters(complevel=9, complib='blosc', fletcher32=False)
+	arr = tempfile.createCArray(tempfile.root, variable+"_"+selname, tables.Float32Atom(),shape=(l,1), filters=filters)
+	logging.debug("Copying data")
+	arr[:,0] = sel[:][variable]
+	logging.debug("Done copying, final shape: %s" % (str(arr.shape)))
+	tempfile.flush()
+	return arr
+
 def chi_h_points(selection, recreate=True):
 	logger = logging
 	logger.debug("Starting to get chi1/h1 points")
@@ -122,26 +136,46 @@ def draw_with_excl(excl=None, tag=None):
 
 
 if __name__=="__main__":
-	logging.debug("Getting data points")
-	((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
-	logging.debug("Calculating density")
-	(x,y, density_points_for_calc, densities) = eval_density(chi1, h1, max_data_points=1000000)
+	tempfile = tables.openFile("temp.h5", mode="w")
+
+	sel_nophen = "PROB==0"
+	(h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
+
+	sel_goodH = "(h1_mass>123)&(h1_mass<129)"
+	(h1_goodH, chi1_goodH) = (get_points(sel_goodH, "h1_mass", tempfile, "goodH"), get_points(sel_goodH, "chi1_mass", tempfile, "goodH"))
+
+	h1_goodH = h1_goodH[0:10000]
+	chi1_goodH = chi1_goodH[0:10000]
+	
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
-	xlow, xhigh = min(chi1)-10,max(chi1)+10
-	ylow, yhigh = 123,129
+	ylow, yhigh = min(chi1_goodH)-10,max(chi1_goodH)+10
+	xlow, xhigh = 123,129
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
-	logging.debug("Plotting density contours")
-	ax1.contour(x,y, densities, 5)
-	logging.debug("Plotting scatterpoints")
-	ax1.plot(density_points_for_calc[0], density_points_for_calc[1], "o", c="k", alpha=0.3)
-	plt.ylabel("Higgs mass GeV/c**2")
-	plt.xlabel("chi0 mass GeV/c**2")
-	plt.suptitle("NMSSM parameter scan")
-	plt.savefig("nmssm.png")
-	logging.debug("Showing plot")
-	plt.show()
+	ax1.plot(h1_good, chi1_good, "o", c="k", alpha=0.3)
+	ax1.plot(h1_goodH, chi1_goodH, "o", c="r", alpha=0.3)
+
+	# logging.debug("Getting data points")
+	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
+	# logging.debug("Calculating density")
+	# (x,y, density_points_for_calc, densities) = eval_density(chi1, h1, max_data_points=1000000)
+	# fig = plt.figure()
+	# ax1 = fig.add_subplot(111)
+	# xlow, xhigh = min(chi1)-10,max(chi1)+10
+	# ylow, yhigh = 123,129
+	# plt.xlim(xlow, xhigh)
+	# plt.ylim(ylow, yhigh)
+	# logging.debug("Plotting density contours")
+	# ax1.contour(x,y, densities, 5)
+	# logging.debug("Plotting scatterpoints")
+	# ax1.plot(density_points_for_calc[0], density_points_for_calc[1], "o", c="k", alpha=0.3)
+	# plt.ylabel("Higgs mass GeV/c**2")
+	# plt.xlabel("chi0 mass GeV/c**2")
+	# plt.suptitle("NMSSM parameter scan")
+	# plt.savefig("nmssm.png")
+	# logging.debug("Showing plot")
+	# plt.show()
 
 
 #draw_with_excl(excl=[30], tag="allowed_wmap")

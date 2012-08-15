@@ -15,6 +15,8 @@ NMSSMPoint = {
                 "MA": tables.Float32Col(), #9
                 "MP": tables.Float32Col(), #10
                 "h1_mass": tables.Float32Col(), #11
+                "h2_mass": tables.Float32Col(), #13
+                "h3_mass": tables.Float32Col(), #15
                 "chi1_mass": tables.Float32Col(), #22
                 "omg": tables.Float32Col(), #26
                 "PROB": tables.BoolCol(),
@@ -47,6 +49,8 @@ def process_line(point, line):
     point["MA"] = line_data[9]
     point["MP"] = line_data[10]
     point["h1_mass"] = line_data[11]
+    point["h1_mass"] = line_data[13]
+    point["h1_mass"] = line_data[15]
     point["chi1_mass"] = line_data[22]
     point["omg"] = line_data[26]
 
@@ -72,7 +76,7 @@ if __name__=="__main__":
         f = open(fn, "r")
         lines = True
         while lines:
-            lines = f.readlines(10000000)
+            lines = f.readlines(1000000)
             for line in lines:
                 process_line(point, line)
         f.close()
