@@ -27,49 +27,88 @@ BLOCK MINPAR
 	38	10.D0       	# TANB_max at MZ (If =/= min)
 
 BLOCK EXTPAR
-	107	66.D0		# M1_min (If =/= M2/2)
-#	108	66.D0		# M1_max (If =/= min)
-	207	133.D0		# M2_min
-#	208	133.D0		# M2_max (If =/= min)
-	307	500.D0		# M3_min (If =/= 3*M2)
-#	308	500.D0		# M3_max (If =/= min)
-	11	-2500.D0	# AU3
-	12	-2500.D0	# AD3
-	13	-2500.D0	# AE3
-#	16	-2500.D0	# AE2 = AE1 (If =/= AE3)
-	33	200.D0		# ML3
-#	32	200.D0		# ML1 = ML2 (If =/= ML3)
-	36	200.D0		# ME3
-#	35	200.D0		# ME1 = ME2 (If =/= ME3)
 
-	42	1000.D0		# MQ1 = MQ2 (If =/= MQ3)
+#M1
+    107	10.D0		# M1_min (If =/= M2/2)
+	108	5000.D0		# M1_max (If =/= min)
+
+#M2
+    207	10.D0		# M2_min
+	208	5000.D0		# M2_max (If =/= min)
+
+#M3
+    307	10.D0		# M3_min (If =/= 3*M2)
+	308	5000.D0		# M3_max (If =/= min)
+
+#	11	-2500.D0	# AU3
+	117	-2500.D0	# AU3_min
+	118	0.0D0	    # AU3_max
+
+#	12	-2500.D0	# AD3
+	127	-2500.D0	# AD3_min
+	128	0.0D0	    # AD3_max
+
+#	13	-2500.D0	# AE3
+	137	-2500.D0	# AE3_min
+	138	0.0D0	    # AE3_max
+
+#	16	-2500.D0	# AE2 = AE1 (If =/= AE3)
+	167	-2500.D0	# AE12_min
+	168	0.0D0	    # AE12_max
+
+#	33	200.D0		# ML3
+#	32	200.D0		# ML1 = ML2 (If =/= ML3)
+	327	10.D0		# ML12_min
+	328	5000.D0		# ML12_max
+	337	10.D0		# ML3_min
+	338	5000.D0		# ML3_max
+
+#	35	200.D0		# ME1 = ME2 (If =/= ME3)
+#	36	200.D0		# ME3
+	357	10.D0		# ME12_min
+	358	5000.D0		# ME12_max
+	367	10.D0		# ME3_min
+	368	5000.D0		# ME3_max
+
+#   42	1000.D0		# MQ1 = MU2 (If =/= MU3)
 #	43	1000.D0		# MQ3
+	427	10.D0		# MQ12_min
+	428	5000.D0		# MQ12_max
 	437	10.D0		# MQ3_min
 	438	5000.D0		# MQ3_max
 
-    45	1000.D0		# MU1 = MU2 (If =/= MU3)
+#   45	1000.D0		# MU1 = MU2 (If =/= MU3)
 #	46	1000.D0		# MU3
+	457	10.D0		# MU12_min
+	458	5000.D0		# MU12_max
 	467	10.D0		# MU3_min
 	468	5000.D0		# MU3_max
 
-	48	1000.D0		# MD1 = MD2 (If =/= MD3)
+#   48	1000.D0		# MD1 = MU2 (If =/= MU3)
 #	49	1000.D0		# MD3
+	487	10.D0		# MD12_min
+	488	5000.D0		# MD12_max
 	497	10.D0		# MD3_min
 	498	5000.D0		# MD3_max
 
 	617	.1D0		# LAMBDA_min
 	618	.7D0		# LAMBDA_max (If =/= min)
+
 	627	.1D0		# KAPPA_min
 	628	.6D0		# KAPPA_max (If =/= min)
+
 	637	-1000.D0	# ALAMBDA_min (If MA is not an input)
 	638	0.D0		# ALAMBDA_max (If =/= min and MA is not an input)
+
 	647	-1000.D0	# AKAPPA_min
 	648	0.D0		# AKAPPA_max (If =/= min)
+
 	657	100.D0		# MUEFF_min
 	658	1000.D0		# MUEFF_max (If =/= min)
+
 #	1247	0.D0		# MA_min (If ALAMBDA is not an input)
 #	1248	0.D0		# MA_max (If =/= min and ALAMBDA is not an input)
 
 BLOCK STEPS
-	0   4		# NTOT
+	0	500		# NTOT
 	1	2		# ISEED
