@@ -431,11 +431,11 @@
 
 *   Landau Pole?
 
-*      CALL RGES(PAR,PROB,IFAIL)
+      CALL RGES(PAR,PROB,IFAIL)
 
 *   RGEs for the soft terms
 
-*      CALL RGESOFT(PAR,IFAIL)
+      CALL RGESOFT(PAR,IFAIL)
       
 *   Relic density
 
