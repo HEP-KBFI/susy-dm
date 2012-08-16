@@ -41,18 +41,22 @@ BLOCK EXTPAR
 #	32	200.D0		# ML1 = ML2 (If =/= ML3)
 	36	200.D0		# ME3
 #	35	200.D0		# ME1 = ME2 (If =/= ME3)
-#	42	1000.D0		# MQ1 = MQ2 (If =/= MQ3)
+
+	42	1000.D0		# MQ1 = MQ2 (If =/= MQ3)
 #	43	1000.D0		# MQ3
 	437	10.D0		# MQ3_min
 	438	5000.D0		# MQ3_max
+
+    45	1000.D0		# MU1 = MU2 (If =/= MU3)
 #	46	1000.D0		# MU3
 	467	10.D0		# MU3_min
 	468	5000.D0		# MU3_max
+
+	48	1000.D0		# MD1 = MD2 (If =/= MD3)
 #	49	1000.D0		# MD3
 	497	10.D0		# MD3_min
 	498	5000.D0		# MD3_max
-#	45	1000.D0		# MU1 = MU2 (If =/= MU3)
-#	48	1000.D0		# MD1 = MD2 (If =/= MD3)
+
 	617	.1D0		# LAMBDA_min
 	618	.7D0		# LAMBDA_max (If =/= min)
 	627	.1D0		# KAPPA_min
