@@ -360,6 +360,9 @@
       ELSE
        PAR(9)=SQMD3MIN+(SQMD3MAX-SQMD3MIN)*RAN2(IDUM)
       ENDIF
+      WRITE(0,*)PAR(7)
+      WRITE(0,*)PAR(8)
+      WRITE(0,*)PAR(9)
 
       XIF=0d0
       XIS=0d0
