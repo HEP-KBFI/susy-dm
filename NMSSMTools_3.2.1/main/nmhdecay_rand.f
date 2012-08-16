@@ -344,6 +344,8 @@
        PAR(6)=AKMIN+(AKMAX-AKMIN)*RAN2(IDUM)
       ENDIF
 
+      WRITE(0,*)SQMQ3MIN
+      WRITE(0,*)SQMQ3MAX
 *     Choose random squark masses
       IF(SQMQ3MIN.EQ.SQMQ3MAX)THEN
        PAR(7)=SQMQ3MIN
