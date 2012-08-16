@@ -71,5 +71,5 @@ BLOCK EXTPAR
 #	1248	0.D0		# MA_max (If =/= min and ALAMBDA is not an input)
 
 BLOCK STEPS
-	0	500		# NTOT
+	0   4		# NTOT
 	1	2		# ISEED
