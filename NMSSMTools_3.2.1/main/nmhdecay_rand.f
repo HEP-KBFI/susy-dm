@@ -560,11 +560,11 @@
 
 *   Landau Pole?
 
-      CALL RGES(PAR,PROB,IFAIL)
+*      CALL RGES(PAR,PROB,IFAIL)
 
 *   RGEs for the soft terms
 
-      CALL RGESOFT(PAR,IFAIL)
+*      CALL RGESOFT(PAR,IFAIL)
       
 *   Relic density
 
@@ -582,7 +582,7 @@
 
 *   Computation of the fine-tuning
 
-      CALL FTPAR(PAR,0)
+*      CALL FTPAR(PAR,0)
 
 *   Sparticle decays
 
