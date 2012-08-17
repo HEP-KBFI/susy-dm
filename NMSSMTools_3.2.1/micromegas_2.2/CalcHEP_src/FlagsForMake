@@ -1,24 +1,24 @@
 # compiler Flags
 CC = gcc
-CFLAGS = -fsigned-char -fPIC
-HX11 = 
-LX11 = -lX11
-lDL = -rdynamic -ldl 
-CFLAGSD = 
-SHARED = -shared
+CFLAGS = -fsigned-char
+HX11 = -I/usr/X11R6/include
+LX11 = -L/usr/X11R6/lib -lX11
+lDL = -ldl 
+CFLAGSD = -dynamic
+SHARED = -dynamiclib
 SONAME = 
 SO = so
 LOCK = -DFCNTL
 SNUM = -DNUM_LONG_LONG
 
-FC = g77 
+FC = gfortran 
 FFLAGS = -Wall
-RANLIB = ranlib
+RANLIB = ranlib -c
 lFort = 
-CXX=g++    
+CXX=    
 
-CALCHEP = /home/joosep/susy/micromegas/NMSSMTools_3.2.1/micromegas_2.2/CalcHEP_src
-UNAME = Linux
+CALCHEP = /Users/joosep/Documents/susy-dm/NMSSMTools_3.2.1/micromegas_2.2/CalcHEP_src
+UNAME = Darwin
 export CC CFLAGS CFLAGSD lDL LX11 SHARED SONAME SO FC FFLAGS RANLIB CXX lFort
 
 

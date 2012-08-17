@@ -2,22 +2,22 @@
 CC="gcc" 
 
 # Flags for C compiler
-CFLAGS="-fsigned-char -fPIC"
+CFLAGS="-fsigned-char"
 
 # Disposition of header files for X11 
-HX11=
+HX11=-I/usr/X11R6/include
 
 # Disposition of lX11  
-LX11="-lX11"
+LX11="-L/usr/X11R6/lib -lX11"
 
 # Library which supports runtime  loading of shared libraries  
-lDL="-rdynamic -ldl"
+lDL="-ldl"
 
 # Addition flags needed to compile objet files for shared libraries
-CFLAGSD=""
+CFLAGSD="-dynamic"
 
 # C Flag which forces compilation of  shared library 
-SHARED="-shared"
+SHARED="-dynamiclib"
 
 # FLAG to define  shared_object_name for shared library
 SONAME=
@@ -37,7 +37,7 @@ SO=so
 SNUM=-DNUM_LONG_LONG
 
 # Fortran compiler
-FC="g77"
+FC="gfortran"
 
 # Flags for Fortran compiler
 FFLAGS="-Wall"
@@ -46,13 +46,13 @@ FFLAGS="-Wall"
 lFort=""
 
 # C++ compiler
-CXX="g++"
+CXX=""
 
 # RANLIB 
-RANLIB="ranlib"
+RANLIB="ranlib -c"
 
 # MAKE 
-MAKE=gmake        
+MAKE=make        
 
 export CC CFLAGS CFLAGSD lDL LX11 SHARED SONAME SO FC FFLAGS RANLIB CXX lFort MAKE
 
