@@ -75,7 +75,7 @@ def process_line(point, line):
 
 def process_file(infn):
     ofn = outdir+infn.replace(".dat.bz2", ".h5").split("/")[-1]
-    print "%s -> %s" % (infn, ofn)
+    print "begin processing %s -> %s" % (infn, ofn)
     h5file = tables.openFile(ofn, mode = "w")
     filters = tables.Filters(complevel=9, complib='blosc', fletcher32=False)
     table = h5file.createTable("/", 'parspace', NMSSMPoint, "parameter space", expectedrows=2000000, filters=filters)
@@ -96,10 +96,12 @@ def process_file(infn):
 if __name__=="__main__":
     files = glob.glob(sys.argv[1])
     outdir = sys.argv[2]
+    if outdir[-1]!="/": outdir += "/"
 
     print "Input files"
     for f in files:
         print f
+    print 80*"-"
 
     p = Pool(int(sys.argv[3]))
     res = p.map(process_file, files)
