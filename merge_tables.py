@@ -6,8 +6,14 @@ if __name__=="__main__":
 	of = tables.openFile("out.h5", "w")
 	infiles = map(tables.openFile, glob.glob(sys.argv[1]))
 	infiles[0].root.parspace.copy(of.root)
+	ot = of.root.parspace
+	colname = of.root.parspace.colnames[0]
+	dummySel = colname +"=="+colname
 	for inf in infiles[1:]:
-		inf.root.parspace.whereAppend(of.root.parspace, of.parspace.colnames[0] + "==" + of.parspace.colnames[0])
+		t = inf.root.parspace
+		print "Putting %d rows from %s" % (t.nrows, str(inf))
+		t.whereAppend(ot, dummySel)
 		inf.close()
 		of.flush()
+		print "Output table has %d rows" % ot.nrows
 	of.close()
