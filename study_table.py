@@ -12,6 +12,16 @@ h5file = tables.openFile("nmssm1.h5", mode = "r")
 t = h5file.root.NMSSM1.parspace
 logging.basicConfig(level=logging.DEBUG)
 
+def getProbs(line):
+	i = long(line["PROB"])
+	return map(lambda x: x[0], filter(lambda x: x[1], [(j, i&(1<<j)!=0) for j in range(1,54)]))
+
+def notExcluded(excl):
+	s = ""
+	for e in excl:
+		s += "((PROB/(2**%d))%%2==0)&" % e
+	return s[:-1]
+
 def get_points(selection, variable, tempfile, selname):
 	logging.debug("Starting to get %s points with selection %s"% (variable, selection))
 	li = t.getWhereList(selection)
@@ -102,6 +112,15 @@ def not_excluded(i, step=1):
 	r = r[:-1]
 	return r
 
+def exclusion_hist(points):
+	h = {}
+	for p in points:
+		for e in p:
+			if e not in h.keys():
+				h[e] = 0
+			h[e] += 1
+	return h
+
 def exclusions(x):
 	excl = []
 	for i in range(1,54):
@@ -153,8 +172,12 @@ if __name__=="__main__":
 	xlow, xhigh = 123,129
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
-	ax1.plot(h1_good, chi1_good, "o", c="k", alpha=0.3)
-	ax1.plot(h1_goodH, chi1_goodH, "o", c="r", alpha=0.3)
+	ax1.plot(h1_good, chi1_good, "o", c="r", ms=5.0, alpha=0.8)
+	ax1.plot(h1_goodH, chi1_goodH, "o", c="k", ms=1.0, alpha=0.4)
+	plt.xlabel("h1 mass (Gev/c**2)")
+	plt.ylabel("chi1 mass (Gev/c**2)")
+	plt.show()
+	fig.savefig("chi1_h1.png")
 
 	# logging.debug("Getting data points")
 	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)

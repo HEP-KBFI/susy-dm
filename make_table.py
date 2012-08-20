@@ -3,6 +3,10 @@ import glob
 import sys
 import bz2
 import time
+from multiprocessing import Pool
+
+
+outdir = "/Users/joosep/Desktop/test/"
 
 NMSSMPoint = {
                 "Lambda": tables.Float32Col(), #0
@@ -21,14 +25,20 @@ NMSSMPoint = {
                 "h3_mass": tables.Float32Col(), #15
                 "chi1_mass": tables.Float32Col(), #22
                 "omg": tables.Float32Col(), #26
-                "PROB": tables.BoolCol(),
+                #"PROB": tables.BoolCol(),
                 "IFAIL": tables.Int32Col(),
+                "PROB": tables.Int64Col(),
 }
 NProb = 54
 
-for i in range(1,NProb):
-    NMSSMPoint["PROB%d"%i] = tables.BoolCol()
+#for i in range(1,NProb):
+#    NMSSMPoint["PROB%d"%i] = tables.BoolCol()
 
+def bool2int(x):
+    y = 0L
+    for i,j in enumerate(x):
+        if j: y += 1<<i
+    return y
 
 def process_line(point, line):
     try:
@@ -57,36 +67,41 @@ def process_line(point, line):
     point["chi1_mass"] = line_data[22]
     point["omg"] = line_data[26]
     point["IFAIL"] = int(line_data[80])
+    probs = [bool(line_data[26+i]) for i in range(1,NProb)]
+    point["PROB"] = bool2int(probs)
 
-    prob = False
-    for i in range(1,NProb):
-        p = bool(line_data[26+i])
-        point["PROB%d"%i] = p
-        if p: prob=True
-    point["PROB"] = prob #Set to True if any of PROB1-53 is True
     point.append()
     return
 
-if __name__=="__main__":
-    h5file = tables.openFile("nmssm1.h5", mode = "w", title = "SUSY parameter space points")
-    group = h5file.createGroup("/", 'NMSSM1', 'NMSSM points')
+def process_file(infn):
+    ofn = outdir+infn.replace(".dat.bz2", ".h5").split("/")[-1]
+    print "%s -> %s" % (infn, ofn)
+    h5file = tables.openFile(ofn, mode = "w")
     filters = tables.Filters(complevel=9, complib='blosc', fletcher32=False)
-    table = h5file.createTable(group, 'parspace', NMSSMPoint, "parameter space", expectedrows=int(sys.argv[2]))
+    table = h5file.createTable("/", 'parspace', NMSSMPoint, "parameter space", expectedrows=2000000, filters=filters)
     point = table.row
-    files = glob.glob(sys.argv[1])
-    print files
-    for fn in files:
-        t0 = time.time()
-        print "Processing file %s" % fn
-        f = bz2.BZ2File(fn, "r")
-        lines = True
-        while lines:
-            lines = f.readlines(1000000)
-            for line in lines:
-                process_line(point, line)
-        f.close()
-        t1 = time.time()
-        elapsed = t1-t0
-        print "Processing took %d seconds" % elapsed
+    t0 = time.time()
+    f = bz2.BZ2File(infn, "r")
+    lines = True
+    while lines:
+        lines = f.readlines(100000000)
+        map(lambda x: process_line(point, x), lines)
+    f.close()
+    t1 = time.time()
+    elapsed = t1-t0
+    h5file.flush()
     h5file.close()
+    return [ofn, elapsed]
+
+if __name__=="__main__":
+    files = glob.glob(sys.argv[1])
+    outdir = sys.argv[2]
+
+    print "Input files"
+    for f in files:
+        print f
+
+    p = Pool(int(sys.argv[3]))
+    res = p.map(process_file, files)
+    print res
     print "All done"
