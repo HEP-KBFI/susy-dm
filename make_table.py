@@ -44,7 +44,6 @@ def process_line(point, line):
     try:
         line_data = map(float, line.split())
     except ValueError:
-        print "bad line: %s" % line_data
         return
 
     if not len(line_data)==81:
