@@ -1,10 +1,11 @@
 import tables
 import glob
 import sys
+import bz2
 
 NMSSMPoint = {
-                "lambda": tables.Float32Col(), #0
-                "kappa": tables.Float32Col(), #1
+                "Lambda": tables.Float32Col(), #0
+                "Kappa": tables.Float32Col(), #1
                 "tanbeta": tables.Float32Col(), #2
                 "mu": tables.Float32Col(), #3
                 "Alambda": tables.Float32Col(), #4
@@ -20,6 +21,7 @@ NMSSMPoint = {
                 "chi1_mass": tables.Float32Col(), #22
                 "omg": tables.Float32Col(), #26
                 "PROB": tables.BoolCol(),
+                "IFAIL": tables.Int32Col(),
 }
 NProb = 54
 
@@ -34,11 +36,11 @@ def process_line(point, line):
         print "bad line in %s" % fn
         return
 
-    if not len(line_data)==80:
+    if not len(line_data)==81:
         return
 
-    point["lambda"] = line_data[0]
-    point["kappa"] = line_data[1]
+    point["Lambda"] = line_data[0]
+    point["Kappa"] = line_data[1]
     point["tanbeta"] = line_data[2]
     point["mu"] = line_data[3]
     point["Alambda"] = line_data[4]
@@ -53,6 +55,7 @@ def process_line(point, line):
     point["h1_mass"] = line_data[15]
     point["chi1_mass"] = line_data[22]
     point["omg"] = line_data[26]
+    point["IFAIL"] = int(line_data[80])
 
     prob = False
     for i in range(1,NProb):
@@ -73,7 +76,7 @@ if __name__=="__main__":
     print files
     for fn in files:
         print "Processing file %s" % fn
-        f = open(fn, "r")
+        f = bz2.BZ2File(fn, "r")
         lines = True
         while lines:
             lines = f.readlines(1000000)
