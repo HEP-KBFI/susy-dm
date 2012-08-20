@@ -12,7 +12,7 @@ if __name__=="__main__":
 	print "Output table has %d rows" % ot.nrows
 	colname = of.root.parspace.colnames[0]
 	dummySel = colname +"=="+colname
-
+	inrows = sum(map(lambda x: x.root.parspace.nrows, infiles))
 	n = 1
 	for inf in infiles[1:]:
 		t0 = time.time()
@@ -26,7 +26,6 @@ if __name__=="__main__":
 		t1 = time.time()
 		print "Copying took %d seconds" % (t1-t0)
 
-	inrows = sum(map(lambda x: x.root.parspace.nrows, infiles))
 	outrows = ot.nrows
 	print "Copied %d rows" % outrows
 	if inrows != outrows:
