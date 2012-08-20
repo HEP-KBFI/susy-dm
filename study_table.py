@@ -8,7 +8,7 @@ import scipy
 import scipy.stats
 import logging
 
-h5file = tables.openFile("/Users/joosep/Desktop/nmssm1.h5", mode = "r")
+h5file = tables.openFile("nmssm1.h5", mode = "r")
 t = h5file.root.NMSSM1.parspace
 logging.basicConfig(level=logging.DEBUG)
 

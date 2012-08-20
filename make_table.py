@@ -2,6 +2,7 @@ import tables
 import glob
 import sys
 import bz2
+import time
 
 NMSSMPoint = {
                 "Lambda": tables.Float32Col(), #0
@@ -51,8 +52,8 @@ def process_line(point, line):
     point["MA"] = line_data[9]
     point["MP"] = line_data[10]
     point["h1_mass"] = line_data[11]
-    point["h1_mass"] = line_data[13]
-    point["h1_mass"] = line_data[15]
+    point["h2_mass"] = line_data[13]
+    point["h3_mass"] = line_data[15]
     point["chi1_mass"] = line_data[22]
     point["omg"] = line_data[26]
     point["IFAIL"] = int(line_data[80])
@@ -75,6 +76,7 @@ if __name__=="__main__":
     files = glob.glob(sys.argv[1])
     print files
     for fn in files:
+        t0 = time.time()
         print "Processing file %s" % fn
         f = bz2.BZ2File(fn, "r")
         lines = True
@@ -83,5 +85,8 @@ if __name__=="__main__":
             for line in lines:
                 process_line(point, line)
         f.close()
+        t1 = time.time()
+        elapsed = t1-t0
+        print "Processing took %d seconds" % elapsed
     h5file.close()
     print "All done"
