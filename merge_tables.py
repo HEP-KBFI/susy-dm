@@ -25,4 +25,10 @@ if __name__=="__main__":
 		n += 1
 		t1 = time.time()
 		print "Copying took %d seconds" % (t1-t0)
+
+	inrows = sum(map(lambda x: x.root.parspace.nrows, infiles))
+	outrows = ot.nrows
+	print "Copied %d rows" % outrows
+	if inrows != outrows:
+		raise Exception("Inrows =/= outrows")
 	of.close()
