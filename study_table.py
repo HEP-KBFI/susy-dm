@@ -22,8 +22,8 @@ def notExcluded(excl):
 		s += "((PROB/(2**%d))%%2==0)&" % e
 	return s[:-1]
 
-def get_points(selection, variable, tempfile, selname, maxN=None):
-	logging.debug("Starting to get %s points with selection %s"% (variable, selection))
+def get_points(variables, selection, selname, tempfile, maxN=None):
+	logging.debug("Starting to get %s points with selection %s"% (variables, selection))
 	li = t.getWhereList(selection)
 	if maxN!=None:
 		li = li[0:maxN]
@@ -34,9 +34,10 @@ def get_points(selection, variable, tempfile, selname, maxN=None):
 	logging.debug("%d points in selection" % l)
 	sel = t.readCoordinates(li)
 	filters = tables.Filters(complevel=9, complib='blosc', fletcher32=False)
-	arr = tempfile.createCArray(tempfile.root, variable+"_"+selname, tables.Float32Atom(),shape=(l,1), filters=filters)
+	arr = tempfile.createCArray(tempfile.root, selname, tables.Float32Atom(),shape=(l,len(variables)), filters=filters)
 	logging.debug("Copying data")
-	arr[:,0] = sel[:][variable]
+	for i in range(len(variables)):
+		arr[:,i] = sel[:][variables[i]]
 	logging.debug("Done copying, final shape: %s" % (str(arr.shape)))
 	tempfile.flush()
 	return arr
@@ -158,13 +159,6 @@ def draw_with_excl(excl=None, tag=None):
 	plt.show()
 	#plt.savefig("/home/joosep/web/nmssm_%s.png"%tag)
 
-def getVars(vs, sel, phen, tempfile):
-	retvars = []
-	for v in vs:
-		globals()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=50000)
-		retvars.append(globals()[v+"_"+phen])
-	return retvars
-
 # def plot2d(varx, vary, sel, selname, tempfile):
 # 	vs = [varx, vary]
 # 	(varx, vary) = getVars(vs, sel, selname, tempfile)
@@ -188,8 +182,17 @@ if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
 	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
-	getVars(vars_to_get, "PROB==0", "nophen", tempfile)
-	getVars(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile)
+	vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
+	vars_goodH = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile)
+	
+	h1_mass_nophen = vars_nophen[:,0]
+	chi11_mass_nophen = vars_nophen[:,1]
+	Lambda_nophen = vars_nophen[:,2]
+
+	h1_mass_goodH = vars_goodH[:,0]
+	chi11_mass_goodH = vars_goodH[:,1]
+	Lambda_goodH = vars_goodH[:,2]
+
 	# sel_nophen = "PROB==0"
 	# phen = "nophen"
 	# (h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
