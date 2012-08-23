@@ -161,7 +161,7 @@ def draw_with_excl(excl=None, tag=None):
 def getVars(vs, sel, phen, tempfile):
 	phen = "goodH"
 	for v in vs:
-		globals()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=10000)
+		globals()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=50000)
 
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
@@ -188,8 +188,8 @@ if __name__=="__main__":
 	xlow, xhigh = 123,129
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
-	#ax1.plot(h1_good, chi1_good, "o", c="r", ms=5.0, alpha=0.8)
-	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.4)
+	ax1.plot(h1_good, chi1_good, "o", c="r", ms=5.0, alpha=0.8)
+	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
 	plt.xlabel("h1 mass (Gev/c**2)")
 	plt.ylabel("chi1 mass (Gev/c**2)")
 	plt.suptitle("Points with phenomenological problems")
@@ -200,7 +200,7 @@ if __name__=="__main__":
 	ax1 = fig.add_subplot(111)
 	ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
 	plt.xlim(xlow, xhigh)
-	ax1.plot(h1_mass_goodH, Kappa_goodH, "o", c="k", ms=1.0, alpha=0.4)
+	ax1.plot(h1_mass_goodH, Kappa_goodH, "o", c="k", ms=1.0, alpha=0.2)
 	plt.xlabel("h1 mass (Gev/c**2)")
 	plt.ylabel("Kappa")
 	plt.suptitle("Points with phenomenological problems")
