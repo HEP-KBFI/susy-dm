@@ -184,13 +184,16 @@ if __name__=="__main__":
 	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
 	vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
 	vars_goodH = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile)
-	
+
+	for v in vars_nophen[0:10]:
+		print v
+
 	h1_mass_nophen = vars_nophen[:,0]
-	chi11_mass_nophen = vars_nophen[:,1]
+	chi1_mass_nophen = vars_nophen[:,1]
 	Lambda_nophen = vars_nophen[:,2]
 
 	h1_mass_goodH = vars_goodH[:,0]
-	chi11_mass_goodH = vars_goodH[:,1]
+	chi1_mass_goodH = vars_goodH[:,1]
 	Lambda_goodH = vars_goodH[:,2]
 
 	# sel_nophen = "PROB==0"
@@ -216,7 +219,7 @@ if __name__=="__main__":
 	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
 	plt.xlabel("h1 mass (Gev/c**2)")
 	plt.ylabel("chi1 mass (Gev/c**2)")
-	plt.suptitle("Points with phenomenological problems")
+	plt.suptitle("Points with phenomenological problems, 1.0<tanbeta<5.0")
 	plt.show()
 	fig.savefig("h1_chi1.png")
 
