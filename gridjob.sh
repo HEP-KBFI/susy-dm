@@ -9,7 +9,7 @@ OUTDIR=/afs/cern.ch/user/j/jpata/work/public/
 cp -R $BASEDIR $NMSSMDIR
 cd $NMSSMDIR
 make
-cat randinp.dat.template | sed "s/SEEDVAL/$RANDOM/" > randinp_$TAG.dat 
+cat randinp_NMSSM2.dat.template | sed "s/SEEDVAL/$RANDOM/" > randinp_$TAG.dat 
 cd main
 ./nmhdecay_rand < ../randinp_$TAG.dat | grep "[\d\s\+-E\.]+" | bzcat -z9 > ../randout_$TAG.dat.bz2
 cd ..
