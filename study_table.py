@@ -184,7 +184,7 @@ class Axis:
 		self.high = high
 		self.isLog = isLog
 
-def plot2d(varx, vary, title, ofdir=""):
+def plot2d(varx, vary, title, ofdir="."):
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
 	ylow, yhigh = vary.low, vary.high
@@ -200,7 +200,7 @@ def plot2d(varx, vary, title, ofdir=""):
 		ax1.set_xscale('log')
 	#plt.suptitle("Points with phenomenological problems")
 	plt.show()
-	fig.savefig(ofdir + "%s.png" % title)
+	fig.savefig(ofdir + "/%s.png" % title)
 
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
@@ -213,7 +213,7 @@ if __name__=="__main__":
 		Axis(v1[:,0], "h1", 123, 129), 
 		Axis(v1[:,1], "tan beta", 0, 50), 
 		"h1_tanbeta",
-		"/home/joosep/web"
+		"/home/joosep/web/"
 	)
 
 	#vars_goodH2 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH2", tempfile, maxN=30000)
