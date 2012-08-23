@@ -177,6 +177,20 @@ def draw_with_excl(excl=None, tag=None):
 # 	plt.show()
 # 	fig.savefig("h1_chi1.png")
 
+def plot2d(varx, vary, ofdir="", title):
+	fig = plt.figure()
+	ax1 = fig.add_subplot(111)
+	ylow, yhigh = min(vary)-10,max(vary)+10
+	xlow, xhigh = min(varx)-10,max(varx)+10
+	plt.xlim(xlow, xhigh)
+	plt.ylim(ylow, yhigh)
+	ax1.plot(varx, vary, "o", c="k", ms=1.0, alpha=0.2)
+	#plt.xlabel("h1 mass (Gev/c**2)")
+	#plt.ylabel("Lambda")
+	#ax1.set_yscale('log')
+	#plt.suptitle("Points with phenomenological problems")
+	plt.show()
+	fig.savefig(ofdir + "%s.png" % title)
 
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
