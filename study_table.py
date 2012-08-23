@@ -176,17 +176,23 @@ def draw_with_excl(excl=None, tag=None):
 # 	plt.suptitle("Points with phenomenological problems")
 # 	plt.show()
 # 	fig.savefig("h1_chi1.png")
+class Axis:
+	def __init__(v, name, low, high):
+		self.v = v
+		self.name = name
+		self.low = low
+		self.high = high
 
 def plot2d(varx, vary, title, ofdir=""):
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
-	ylow, yhigh = min(vary)-10,max(vary)+10
-	xlow, xhigh = min(varx)-10,max(varx)+10
+	ylow, yhigh = vary.low, vary.high
+	xlow, xhigh = varx.low, varx.high
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
-	ax1.plot(varx, vary, "o", c="k", ms=1.0, alpha=0.2)
-	#plt.xlabel("h1 mass (Gev/c**2)")
-	#plt.ylabel("Lambda")
+	ax1.plot(varx.v, vary.v, "o", c="k", ms=1.0, alpha=0.2)
+	plt.xlabel(varx.title)
+	plt.ylabel(vary.title)
 	#ax1.set_yscale('log')
 	#plt.suptitle("Points with phenomenological problems")
 	plt.show()
@@ -196,19 +202,21 @@ if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
 	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
-	vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
-	vars_goodH = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile, maxN=30000)
+	#vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
+	vars_goodH1 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH1", tempfile, maxN=30000)
+	vars_goodH2 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH2", tempfile, maxN=30000)
+	vars_goodH3 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>10.0)&(tanbeta<15.0)", "goodH3", tempfile, maxN=30000)
 
-	for v in vars_nophen[0:10]:
-		print v
+	# for v in vars_nophen[0:10]:
+	# 	print v
 
-	h1_mass_nophen = vars_nophen[:,0]
-	chi1_mass_nophen = vars_nophen[:,1]
-	Lambda_nophen = vars_nophen[:,2]
+	# h1_mass_nophen = vars_nophen[:,0]
+	# chi1_mass_nophen = vars_nophen[:,1]
+	# Lambda_nophen = vars_nophen[:,2]
 
-	h1_mass_goodH = vars_goodH[:,0]
-	chi1_mass_goodH = vars_goodH[:,1]
-	Lambda_goodH = vars_goodH[:,2]
+	# h1_mass_goodH = vars_goodH[:,0]
+	# chi1_mass_goodH = vars_goodH[:,1]
+	# Lambda_goodH = vars_goodH[:,2]
 
 	# sel_nophen = "PROB==0"
 	# phen = "nophen"
@@ -222,34 +230,34 @@ if __name__=="__main__":
 	# # chi1_mass_goodH = chi1_mass_goodH[0:10000]
 	# # Lambda_goodH = Lambda_goodH[0:10000]
 
-	ofdir = sys.argv[2]
+	# ofdir = sys.argv[2]
 	
-	fig = plt.figure()
-	ax1 = fig.add_subplot(111)
-	ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
-	#ylow, yhigh = 100, 1000
-	xlow, xhigh = 123,129
-	plt.xlim(xlow, xhigh)
-	plt.ylim(ylow, yhigh)
-	ax1.plot(h1_mass_nophen, chi1_mass_nophen, "o", c="r", ms=5.0, alpha=0.8)
-	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
-	plt.xlabel("h1 mass (Gev/c**2)")
-	plt.ylabel("chi1 mass (Gev/c**2)")
-	plt.suptitle("Points with phenomenological problems, 1.0<tanbeta<5.0")
-	plt.show()
-	fig.savefig(ofdir + "h1_chi1.png")
+	# fig = plt.figure()
+	# ax1 = fig.add_subplot(111)
+	# ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
+	# #ylow, yhigh = 100, 1000
+	# xlow, xhigh = 123,129
+	# plt.xlim(xlow, xhigh)
+	# plt.ylim(ylow, yhigh)
+	# ax1.plot(h1_mass_nophen, chi1_mass_nophen, "o", c="r", ms=5.0, alpha=0.8)
+	# ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
+	# plt.xlabel("h1 mass (Gev/c**2)")
+	# plt.ylabel("chi1 mass (Gev/c**2)")
+	# plt.suptitle("Points with phenomenological problems, 1.0<tanbeta<5.0")
+	# plt.show()
+	# fig.savefig(ofdir + "h1_chi1.png")
 
-	fig = plt.figure()
-	ax1 = fig.add_subplot(111)
-	ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
-	plt.xlim(xlow, xhigh)
-	ax1.plot(h1_mass_goodH, Lambda_goodH, "o", c="k", ms=1.0, alpha=0.2)
-	plt.xlabel("h1 mass (Gev/c**2)")
-	plt.ylabel("Lambda")
-	ax1.set_yscale('log')
-	plt.suptitle("Points with phenomenological problems")
-	plt.show()
-	fig.savefig(ofdir + "h1_Lambda.png")
+	# fig = plt.figure()
+	# ax1 = fig.add_subplot(111)
+	# ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
+	# plt.xlim(xlow, xhigh)
+	# ax1.plot(h1_mass_goodH, Lambda_goodH, "o", c="k", ms=1.0, alpha=0.2)
+	# plt.xlabel("h1 mass (Gev/c**2)")
+	# plt.ylabel("Lambda")
+	# ax1.set_yscale('log')
+	# plt.suptitle("Points with phenomenological problems")
+	# plt.show()
+	# fig.savefig(ofdir + "h1_Lambda.png")
 
 	# logging.debug("Getting data points")
 	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
