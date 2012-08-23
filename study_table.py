@@ -8,7 +8,7 @@ import scipy
 import scipy.stats
 import logging
 
-h5file = tables.openFile("/Users/joosep/Desktop/nmssm4.h5", mode = "r")
+h5file = tables.openFile(sys.argv[1], mode = "r")
 t = h5file.root.parspace
 logging.basicConfig(level=logging.DEBUG)
 
@@ -22,10 +22,15 @@ def notExcluded(excl):
 		s += "((PROB/(2**%d))%%2==0)&" % e
 	return s[:-1]
 
-def get_points(selection, variable, tempfile, selname):
+def get_points(selection, variable, tempfile, selname, maxN=None):
 	logging.debug("Starting to get %s points with selection %s"% (variable, selection))
 	li = t.getWhereList(selection)
+	if maxN!=None:
+		li = li[0:maxN]
 	l = len(li)
+	if l==0:
+		logging.debug("No points found!")
+		return numpy.array([])
 	logging.debug("%d points in selection" % l)
 	sel = t.readCoordinates(li)
 	filters = tables.Filters(complevel=9, complib='blosc', fletcher32=False)
@@ -157,28 +162,40 @@ def draw_with_excl(excl=None, tag=None):
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
-	#sel_nophen = "PROB==0"
-	#(h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
+	sel_nophen = "PROB==0"
+	(h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
 
 	sel_goodH = "(h1_mass>123)&(h1_mass<129)"
-	(h1_goodH, chi1_goodH) = (get_points(sel_goodH, "h1_mass", tempfile, "goodH"), get_points(sel_goodH, "chi1_mass", tempfile, "goodH"))
-
-	h1_goodH = h1_goodH[0:10000]
-	chi1_goodH = chi1_goodH[0:10000]
+	phen = "goodH"
+	for v in ["h1_mass", "chi1_mass", "Lambda"]:
+		vars()[v+"_"+phen] = get_points(sel_goodH, v, tempfile, phen, maxN=10000)
+	# h1_mass_goodH = h1_mass_goodH[0:10000]
+	# chi1_mass_goodH = chi1_mass_goodH[0:10000]
+	# Lambda_goodH = Lambda_goodH[0:10000]
 	
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
-	ylow, yhigh = min(chi1_goodH)-10,max(chi1_goodH)+10
+	ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
 	#ylow, yhigh = 100, 1000
 	xlow, xhigh = 123,129
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
 	#ax1.plot(h1_good, chi1_good, "o", c="r", ms=5.0, alpha=0.8)
-	ax1.plot(h1_goodH, chi1_goodH, "o", c="k", ms=1.0, alpha=0.4)
+	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.4)
 	plt.xlabel("h1 mass (Gev/c**2)")
 	plt.ylabel("chi1 mass (Gev/c**2)")
 	plt.show()
-	fig.savefig("chi1_h1.png")
+	fig.savefig("h1_chi1.png")
+
+	fig = plt.figure()
+	ax1 = fig.add_subplot(111)
+	ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
+	plt.xlim(xlow, xhigh)
+	ax1.plot(h1_mass_goodH, Lambda_goodH, "o", c="k", ms=1.0, alpha=0.4)
+	plt.xlabel("h1 mass (Gev/c**2)")
+	plt.ylabel("Lambda")
+	plt.show()
+	fig.savefig("h1_Lambda.png")
 
 	# logging.debug("Getting data points")
 	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
