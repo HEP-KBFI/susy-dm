@@ -192,8 +192,8 @@ def plot2d(varx, vary, title, ofdir=""):
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
 	ax1.plot(varx.v, vary.v, "o", c="k", ms=1.0, alpha=0.2)
-	plt.xlabel(varx.title)
-	plt.ylabel(vary.title)
+	plt.xlabel(varx.name)
+	plt.ylabel(vary.name)
 	if vary.isLog:
 		ax1.set_yscale('log')
 	if varx.isLog:
@@ -207,9 +207,17 @@ if __name__=="__main__":
 
 	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
 	#vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
-	vars_goodH1 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH1", tempfile, maxN=30000)
-	vars_goodH2 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH2", tempfile, maxN=30000)
-	vars_goodH3 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>10.0)&(tanbeta<15.0)", "goodH3", tempfile, maxN=30000)
+	#vars_goodH1 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH1", tempfile, maxN=30000)
+	v1 = get_points(["h1_mass", "tanbeta"], "(h1_mass>123)&(h1_mass<129)", "goodH1", tempfile)
+	plot2d(
+		Axis(v1[:,0], "h1", 123, 129), 
+		Axis(v1[:,1], "tan beta", 0, 50), 
+		"h1_tanbeta",
+		"/home/joosep/web"
+	)
+
+	#vars_goodH2 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH2", tempfile, maxN=30000)
+	#vars_goodH3 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>10.0)&(tanbeta<15.0)", "goodH3", tempfile, maxN=30000)
 
 	# for v in vars_nophen[0:10]:
 	# 	print v
