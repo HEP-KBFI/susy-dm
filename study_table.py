@@ -205,115 +205,11 @@ def plot2d(varx, vary, title, ofdir="."):
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
-	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
-	#vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
-	#vars_goodH1 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH1", tempfile, maxN=30000)
 	v1 = get_points(["h1_mass", "tanbeta"], "(h1_mass>123)&(h1_mass<129)", "goodH1", tempfile, maxN=50000)
-	
 	plot2d(Axis(v1[:,0], "h1", 123, 129), Axis(v1[:,1], "tan beta", 0, 10), "h1_tanbeta", "/home/joosep/web/")
+	v2 = get_points(["h1_mass", "Lambda"], "(h1_mass>123)&(h1_mass<129)&(tanbeta>0.0)&(tanbeta<5.0)", "goodH2", tempfile, maxN=50000)
+	plot2d(Axis(v2[:,0], "h1", 123, 129), Axis(v2[:,1], "Lambda", 0, 50, isLog=True), "h1_Lambda_tb_0_5", "/home/joosep/web/")
+	v3 = get_points(["h1_mass", "Lambda"], "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH3", tempfile, maxN=50000)
+	plot2d(Axis(v3[:,0], "h1", 123, 129), Axis(v3[:,1], "Lambda", 0, 50, isLog=True), "h1_Lambda_tb_5_10", "/home/joosep/web/")
 
-	#vars_goodH2 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH2", tempfile, maxN=30000)
-	#vars_goodH3 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>10.0)&(tanbeta<15.0)", "goodH3", tempfile, maxN=30000)
-
-	# for v in vars_nophen[0:10]:
-	# 	print v
-
-	# h1_mass_nophen = vars_nophen[:,0]
-	# chi1_mass_nophen = vars_nophen[:,1]
-	# Lambda_nophen = vars_nophen[:,2]
-
-	# h1_mass_goodH = vars_goodH[:,0]
-	# chi1_mass_goodH = vars_goodH[:,1]
-	# Lambda_goodH = vars_goodH[:,2]
-
-	# sel_nophen = "PROB==0"
-	# phen = "nophen"
-	# (h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
-
-	# sel_goodH = "(h1_mass>123)&(h1_mass<129)"
-	# phen = "goodH"
-	# for v in ["h1_mass", "chi1_mass", "Lambda"]:
-	# 	vars()[v+"_"+phen] = get_points(sel_goodH, v, tempfile, phen, maxN=10000)
-	# # h1_mass_goodH = h1_mass_goodH[0:10000]
-	# # chi1_mass_goodH = chi1_mass_goodH[0:10000]
-	# # Lambda_goodH = Lambda_goodH[0:10000]
-
-	# ofdir = sys.argv[2]
 	
-	# fig = plt.figure()
-	# ax1 = fig.add_subplot(111)
-	# ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
-	# #ylow, yhigh = 100, 1000
-	# xlow, xhigh = 123,129
-	# plt.xlim(xlow, xhigh)
-	# plt.ylim(ylow, yhigh)
-	# ax1.plot(h1_mass_nophen, chi1_mass_nophen, "o", c="r", ms=5.0, alpha=0.8)
-	# ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
-	# plt.xlabel("h1 mass (Gev/c**2)")
-	# plt.ylabel("chi1 mass (Gev/c**2)")
-	# plt.suptitle("Points with phenomenological problems, 1.0<tanbeta<5.0")
-	# plt.show()
-	# fig.savefig(ofdir + "h1_chi1.png")
-
-	# fig = plt.figure()
-	# ax1 = fig.add_subplot(111)
-	# ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
-	# plt.xlim(xlow, xhigh)
-	# ax1.plot(h1_mass_goodH, Lambda_goodH, "o", c="k", ms=1.0, alpha=0.2)
-	# plt.xlabel("h1 mass (Gev/c**2)")
-	# plt.ylabel("Lambda")
-	# ax1.set_yscale('log')
-	# plt.suptitle("Points with phenomenological problems")
-	# plt.show()
-	# fig.savefig(ofdir + "h1_Lambda.png")
-
-	# logging.debug("Getting data points")
-	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
-	# logging.debug("Calculating density")
-	# (x,y, density_points_for_calc, densities) = eval_density(chi1, h1, max_data_points=1000000)
-	# fig = plt.figure()
-	# ax1 = fig.add_subplot(111)
-	# xlow, xhigh = min(chi1)-10,max(chi1)+10
-	# ylow, yhigh = 123,129
-	# plt.xlim(xlow, xhigh)
-	# plt.ylim(ylow, yhigh)
-	# logging.debug("Plotting density contours")
-	# ax1.contour(x,y, densities, 5)
-	# logging.debug("Plotting scatterpoints")
-	# ax1.plot(density_points_for_calc[0], density_points_for_calc[1], "o", c="k", alpha=0.3)
-	# plt.ylabel("Higgs mass GeV/c**2")
-	# plt.xlabel("chi0 mass GeV/c**2")
-	# plt.suptitle("NMSSM parameter scan")
-	# plt.savefig("nmssm.png")
-	# logging.debug("Showing plot")
-	# plt.show()
-
-
-#draw_with_excl(excl=[30], tag="allowed_wmap")
-#r = range(1,54)
-#draw_with_excl(excl=r, tag="")
-
-
-#def probs(x):
-#    ret = []
-#    for i in range(1,54):
-#        if not x["PROB%d" % i]==0:
-#            ret.append(i)
-#    return ret
-#
-#sel = t.iterrows()
-#points = [(x["h1_mass"], x["chi1_mass"]) for x in sel]
-#h1_mass = map(lambda x: x[0], points)
-#chi1_mass = map(lambda x: x[1], points)
-#fig = plt.figure()
-#ax1 = fig.add_subplot(111)
-#plt.xlabel("Higgs mass GeV/c**2")
-#plt.ylabel("chi0 mass GeV/c**2")
-#ax1.scatter(h1_mass, chi1_mass, s=2.0, marker=".")
-#sel = t.where("PROB==0")
-#points = [(x["h1_mass"], x["chi1_mass"]) for x in sel]
-#h1_mass = map(lambda x: x[0], points)
-#chi1_mass = map(lambda x: x[1], points)
-#ax1.scatter(h1_mass, chi1_mass, s=2.0, marker=".", c="r")
-#plt.show()
-#plt.savefig("/home/joosep/web/nmssm1.png")
