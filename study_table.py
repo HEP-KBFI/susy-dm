@@ -208,7 +208,7 @@ if __name__=="__main__":
 	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
 	#vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
 	#vars_goodH1 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH1", tempfile, maxN=30000)
-	v1 = get_points(["h1_mass", "tanbeta"], "(h1_mass>123)&(h1_mass<129)", "goodH1", tempfile)
+	v1 = get_points(["h1_mass", "tanbeta"], "(h1_mass>123)&(h1_mass<129)", "goodH1", tempfile, maxN=50000)
 	plot2d(
 		Axis(v1[:,0], "h1", 123, 129), 
 		Axis(v1[:,1], "tan beta", 0, 50), 
