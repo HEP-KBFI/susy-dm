@@ -177,7 +177,7 @@ def draw_with_excl(excl=None, tag=None):
 # 	plt.show()
 # 	fig.savefig("h1_chi1.png")
 
-def plot2d(varx, vary, ofdir="", title):
+def plot2d(varx, vary, title, ofdir=""):
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
 	ylow, yhigh = min(vary)-10,max(vary)+10
