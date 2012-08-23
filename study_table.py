@@ -161,7 +161,7 @@ def draw_with_excl(excl=None, tag=None):
 def getVars(vs, sel, phen, tempfile):
 	phen = "goodH"
 	for v in vs:
-		vars()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=10000)
+		globals()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=10000)
 
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
