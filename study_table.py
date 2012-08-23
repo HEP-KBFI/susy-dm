@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.cm
 import numpy
 import sys
-import scipy
-import scipy.stats
+# import scipy
+# import scipy.stats
 import logging
 
 h5file = tables.openFile(sys.argv[1], mode = "r")
