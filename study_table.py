@@ -159,9 +159,30 @@ def draw_with_excl(excl=None, tag=None):
 	#plt.savefig("/home/joosep/web/nmssm_%s.png"%tag)
 
 def getVars(vs, sel, phen, tempfile):
-	phen = "goodH"
+	retvars = []
 	for v in vs:
 		globals()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=50000)
+		retvars.append(globals()[v+"_"+phen])
+	return retvars
+
+# def plot2d(varx, vary, sel, selname, tempfile):
+# 	vs = [varx, vary]
+# 	(varx, vary) = getVars(vs, sel, selname, tempfile)
+# 	fig = plt.figure()
+# 	ax1 = fig.add_subplot(111)
+# 	ylow, yhigh = min(vary)-10,max(vary)+10
+# 	#ylow, yhigh = 100, 1000
+# 	xlow, xhigh = min(varx)-10,max(varx)+10
+# 	plt.xlim(xlow, xhigh)
+# 	plt.ylim(ylow, yhigh)
+# 	ax1.plot(h1_mass_nophen, chi1_mass_nophen, "o", c="r", ms=5.0, alpha=0.8)
+# 	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
+# 	plt.xlabel("h1 mass (Gev/c**2)")
+# 	plt.ylabel("chi1 mass (Gev/c**2)")
+# 	plt.suptitle("Points with phenomenological problems")
+# 	plt.show()
+# 	fig.savefig("h1_chi1.png")
+
 
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
