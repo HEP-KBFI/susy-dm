@@ -209,12 +209,8 @@ if __name__=="__main__":
 	#vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
 	#vars_goodH1 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH1", tempfile, maxN=30000)
 	v1 = get_points(["h1_mass", "tanbeta"], "(h1_mass>123)&(h1_mass<129)", "goodH1", tempfile, maxN=50000)
-	plot2d(
-		Axis(v1[:,0], "h1", 123, 129), 
-		Axis(v1[:,1], "tan beta", 0, 50), 
-		"h1_tanbeta",
-		"/home/joosep/web/"
-	)
+	
+	plot2d(Axis(v1[:,0], "h1", 123, 129), Axis(v1[:,1], "tan beta", 0, 10), "h1_tanbeta", "/home/joosep/web/")
 
 	#vars_goodH2 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH2", tempfile, maxN=30000)
 	#vars_goodH3 = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>10.0)&(tanbeta<15.0)", "goodH3", tempfile, maxN=30000)
