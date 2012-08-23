@@ -155,7 +155,8 @@
 
       IF(IFAIL.EQ.10)THEN
        DO I=1,NPROB
-        IF(I.NE.31)X=X+DABS(PROB(I))
+        IF(I.NE.31 .AND. I.NE.37)X=X+DABS(PROB(I))
+        IF(I.EQ.37 .AND. IGMU.EQ.1)X=X+DABS(PROB(I))
        ENDDO
        X=(1d0+X)*1d10
       ENDIF
