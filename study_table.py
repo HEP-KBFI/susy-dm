@@ -183,7 +183,7 @@ if __name__=="__main__":
 
 	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
 	vars_nophen = get_points(vars_to_get, "PROB==0", "nophen", tempfile)
-	vars_goodH = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile)
+	vars_goodH = get_points(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile, maxN=30000)
 
 	for v in vars_nophen[0:10]:
 		print v
@@ -207,6 +207,8 @@ if __name__=="__main__":
 	# # h1_mass_goodH = h1_mass_goodH[0:10000]
 	# # chi1_mass_goodH = chi1_mass_goodH[0:10000]
 	# # Lambda_goodH = Lambda_goodH[0:10000]
+
+	ofdir = sys.argv[2]
 	
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
@@ -221,7 +223,7 @@ if __name__=="__main__":
 	plt.ylabel("chi1 mass (Gev/c**2)")
 	plt.suptitle("Points with phenomenological problems, 1.0<tanbeta<5.0")
 	plt.show()
-	fig.savefig("h1_chi1.png")
+	fig.savefig(ofdir + "h1_chi1.png")
 
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
@@ -233,7 +235,7 @@ if __name__=="__main__":
 	ax1.set_yscale('log')
 	plt.suptitle("Points with phenomenological problems")
 	plt.show()
-	fig.savefig("h1_Lambda.png")
+	fig.savefig(ofdir + "h1_Lambda.png")
 
 	# logging.debug("Getting data points")
 	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
