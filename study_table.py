@@ -166,9 +166,9 @@ def getVars(vs, sel, phen, tempfile):
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
-	vars_to_get=["h1_mass", "chi1_mass", "Lambda", "Kappa"]
+	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
 	getVars(vars_to_get, "PROB==0", "nophen", tempfile)
-	getVars(vars_to_get, "(h1_mass>123)&(h1_mass<129)", "goodH", tempfile)
+	getVars(vars_to_get, "(h1_mass>123)&(h1_mass<129)&(tanbeta>1.0)&(tanbeta<5.0)", "goodH", tempfile)
 	# sel_nophen = "PROB==0"
 	# phen = "nophen"
 	# (h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
@@ -200,12 +200,13 @@ if __name__=="__main__":
 	ax1 = fig.add_subplot(111)
 	ylow, yhigh = min(chi1_mass_goodH)-10,max(chi1_mass_goodH)+10
 	plt.xlim(xlow, xhigh)
-	ax1.plot(h1_mass_goodH, Kappa_goodH, "o", c="k", ms=1.0, alpha=0.2)
+	ax1.plot(h1_mass_goodH, Lambda_goodH, "o", c="k", ms=1.0, alpha=0.2)
 	plt.xlabel("h1 mass (Gev/c**2)")
-	plt.ylabel("Kappa")
+	plt.ylabel("Lambda")
+	ax1.set_yscale('log')
 	plt.suptitle("Points with phenomenological problems")
 	plt.show()
-	fig.savefig("h1_Kappa.png")
+	fig.savefig("h1_Lambda.png")
 
 	# logging.debug("Getting data points")
 	# ((chi1, h1), tempfile) = chi_h_points("(h1_mass>123)&(h1_mass<129)", True)
