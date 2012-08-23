@@ -177,11 +177,12 @@ def draw_with_excl(excl=None, tag=None):
 # 	plt.show()
 # 	fig.savefig("h1_chi1.png")
 class Axis:
-	def __init__(v, name, low, high):
+	def __init__(self, v, name, low, high, isLog=False):
 		self.v = v
 		self.name = name
 		self.low = low
 		self.high = high
+		self.isLog = isLog
 
 def plot2d(varx, vary, title, ofdir=""):
 	fig = plt.figure()
@@ -193,7 +194,10 @@ def plot2d(varx, vary, title, ofdir=""):
 	ax1.plot(varx.v, vary.v, "o", c="k", ms=1.0, alpha=0.2)
 	plt.xlabel(varx.title)
 	plt.ylabel(vary.title)
-	#ax1.set_yscale('log')
+	if vary.isLog:
+		ax1.set_yscale('log')
+	if varx.isLog:
+		ax1.set_xscale('log')
 	#plt.suptitle("Points with phenomenological problems")
 	plt.show()
 	fig.savefig(ofdir + "%s.png" % title)
