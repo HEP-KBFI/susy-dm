@@ -158,20 +158,28 @@ def draw_with_excl(excl=None, tag=None):
 	plt.show()
 	#plt.savefig("/home/joosep/web/nmssm_%s.png"%tag)
 
+def getVars(vs, sel, phen, tempfile):
+	phen = "goodH"
+	for v in vs:
+		vars()[v+"_"+phen] = get_points(sel, v, tempfile, phen, maxN=10000)
 
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
-	sel_nophen = "PROB==0"
-	(h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
+	vars_to_get=["h1_mass", "chi1_mass", "Lambda"]
+	getVars(vars_to_get, "PROB==0", "nophen", tempfile)
+	getVars(vars_to_get, "(h1_mass>123)&(h1_mass<129)", "goodH", tempfile)
+	# sel_nophen = "PROB==0"
+	# phen = "nophen"
+	# (h1_good, chi1_good) = (get_points(sel_nophen, "h1_mass", tempfile, "nophen"), get_points(sel_nophen, "chi1_mass", tempfile, "nophen"))
 
-	sel_goodH = "(h1_mass>123)&(h1_mass<129)"
-	phen = "goodH"
-	for v in ["h1_mass", "chi1_mass", "Lambda"]:
-		vars()[v+"_"+phen] = get_points(sel_goodH, v, tempfile, phen, maxN=10000)
-	# h1_mass_goodH = h1_mass_goodH[0:10000]
-	# chi1_mass_goodH = chi1_mass_goodH[0:10000]
-	# Lambda_goodH = Lambda_goodH[0:10000]
+	# sel_goodH = "(h1_mass>123)&(h1_mass<129)"
+	# phen = "goodH"
+	# for v in ["h1_mass", "chi1_mass", "Lambda"]:
+	# 	vars()[v+"_"+phen] = get_points(sel_goodH, v, tempfile, phen, maxN=10000)
+	# # h1_mass_goodH = h1_mass_goodH[0:10000]
+	# # chi1_mass_goodH = chi1_mass_goodH[0:10000]
+	# # Lambda_goodH = Lambda_goodH[0:10000]
 	
 	fig = plt.figure()
 	ax1 = fig.add_subplot(111)
