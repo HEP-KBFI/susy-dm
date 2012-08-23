@@ -188,7 +188,7 @@ if __name__=="__main__":
 	xlow, xhigh = 123,129
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
-	ax1.plot(h1_good, chi1_good, "o", c="r", ms=5.0, alpha=0.8)
+	ax1.plot(h1_mass_nophen, chi1_mass_nophen, "o", c="r", ms=5.0, alpha=0.8)
 	ax1.plot(h1_mass_goodH, chi1_mass_goodH, "o", c="k", ms=1.0, alpha=0.2)
 	plt.xlabel("h1 mass (Gev/c**2)")
 	plt.ylabel("chi1 mass (Gev/c**2)")
