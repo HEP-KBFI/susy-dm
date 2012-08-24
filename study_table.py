@@ -191,7 +191,7 @@ def plot2d(varx, vary, title, ofdir="."):
 	xlow, xhigh = varx.low, varx.high
 	plt.xlim(xlow, xhigh)
 	plt.ylim(ylow, yhigh)
-	ax1.plot(varx.v, vary.v, "o", c="k", ms=1.0, alpha=0.2)
+	ax1.plot(varx.v, vary.v, "o", c="k", ms=1.0, alpha=0.1)
 	plt.xlabel(varx.name)
 	plt.ylabel(vary.name)
 	if vary.isLog:
@@ -205,11 +205,21 @@ def plot2d(varx, vary, title, ofdir="."):
 if __name__=="__main__":
 	tempfile = tables.openFile("temp.h5", mode="w")
 
-	v1 = get_points(["h1_mass", "tanbeta"], "(h1_mass>123)&(h1_mass<129)", "goodH1", tempfile, maxN=50000)
-	plot2d(Axis(v1[:,0], "h1", 123, 129), Axis(v1[:,1], "tan beta", 0, 10), "h1_tanbeta", "/home/joosep/web/")
-	v2 = get_points(["h1_mass", "Lambda"], "(h1_mass>123)&(h1_mass<129)&(tanbeta>0.0)&(tanbeta<5.0)", "goodH2", tempfile, maxN=50000)
-	plot2d(Axis(v2[:,0], "h1", 123, 129), Axis(v2[:,1], "Lambda", 0, 50, isLog=True), "h1_Lambda_tb_0_5", "/home/joosep/web/")
-	v3 = get_points(["h1_mass", "Lambda"], "(h1_mass>123)&(h1_mass<129)&(tanbeta>5.0)&(tanbeta<10.0)", "goodH3", tempfile, maxN=50000)
-	plot2d(Axis(v3[:,0], "h1", 123, 129), Axis(v3[:,1], "Lambda", 0, 50, isLog=True), "h1_Lambda_tb_5_10", "/home/joosep/web/")
+	ofdir = "."
+	if len(sys.argv)>=3:
+		ofdir = sys.argv[2]
 
-	
+	h1_low = 123
+	h1_high = 129
+	maxN = 50000
+	hmass_bounds = "(h1_mass>%f)&(h1_mass<%f)" % (h1_low, h1_high)
+
+	v1 = get_points(["h1_mass", "tanbeta"], hmass_bounds, "goodH1", tempfile, maxN=maxN)
+	plot2d(Axis(v1[:,0], "h1", h1_low, h1_high), Axis(v1[:,1], "tan beta", 0, 12), "h1_tanbeta", ofdir)
+
+	v2 = get_points(["h1_mass", "Lambda"], hmass_bounds + "&(tanbeta>0.0)&(tanbeta<5.0)", "goodH2", tempfile, maxN=maxN)
+	plot2d(Axis(v2[:,0], "h1", h1_low, h1_high), Axis(v2[:,1], "Lambda", 0, 50, isLog=True), "h1_Lambda_tb_0_5", ofdir)
+
+	v3 = get_points(["h1_mass", "Lambda"], hmass_bounds + "&(tanbeta>5.0)&(tanbeta<10.0)", "goodH3", tempfile, maxN=maxN)
+	plot2d(Axis(v3[:,0], "h1", h1_low, h1_high), Axis(v3[:,1], "Lambda", 0, 50, isLog=True), "h1_Lambda_tb_5_10", ofdir)
+
