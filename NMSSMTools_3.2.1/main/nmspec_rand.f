@@ -839,7 +839,7 @@ c      PROB(52)=DDIM(1d0,M12/CMS_SUSY(M0))
 
 *   Recording of the results
 
-11    IF(IFAIL.EQ.0)THEN
+11    IF(IFAIL.EQ.0.OR.IFAIL.EQ.10)THEN
        TOT=TOT+1
        M0N=MIN(M0,M0N)
        M0NN=MAX(M0,M0NN)
@@ -1538,7 +1538,7 @@ c      PROB(52)=DDIM(1d0,M12/CMS_SUSY(M0))
       COMMON/IDIM/IDIM
       COMMON/RES/RES
 
-      IF(IFAIL.EQ.0)THEN
+      IF(IFAIL.EQ.0.OR.IFAIL.EQ.10)THEN
       
        IDIM=IDIM+1      
        RES(IDIM,1)=PAR(1)
@@ -1571,17 +1571,17 @@ c      PROB(52)=DDIM(1d0,M12/CMS_SUSY(M0))
        ! ENDDO
        !ENDDO
        DO I=1,53
-        RES(IDIM,27+I)=PROB(I)
+        RES(IDIM,25+I)=PROB(I)
        ENDDO
-       RES(IDIM,81)=IFAIL
+       RES(IDIM,79)=IFAIL
 
 
       ENDIF
        
       IF(ITOT.EQ.NTOT.OR.IDIM.EQ.IMAX)THEN
        DO I=1,IDIM
-        WRITE(6,10)(RES(I,J),J=1,50)
- 10     FORMAT(50E16.8)
+        WRITE(6,10)(RES(I,J),J=1,79)
+ 10     FORMAT(79E16.8)
        ENDDO
        IF(IDIM.EQ.IMAX)IDIM=0
       ENDIF
