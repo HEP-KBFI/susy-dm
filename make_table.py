@@ -40,7 +40,7 @@ def bool2int(x):
         if j: y += 1<<i
     return y
 
-def process_line(point, line):
+def process_line(point, line, form=None):
     try:
         line_data = map(float, line.split())
     except ValueError:
@@ -49,24 +49,53 @@ def process_line(point, line):
     if not len(line_data)==81:
         return
 
-    point["Lambda"] = line_data[0]
-    point["Kappa"] = line_data[1]
-    point["tanbeta"] = line_data[2]
-    point["mu"] = line_data[3]
-    point["Alambda"] = line_data[4]
-    point["Akappa"] = line_data[5]
-    point["M1"] = line_data[6]
-    point["M2"] = line_data[7]
-    point["M3"] = line_data[8]
-    point["MA"] = line_data[9]
-    point["MP"] = line_data[10]
-    point["h1_mass"] = line_data[11]
-    point["h2_mass"] = line_data[13]
-    point["h3_mass"] = line_data[15]
-    point["chi1_mass"] = line_data[22]
-    point["omg"] = line_data[26]
-    point["IFAIL"] = int(line_data[80])
-    probs = [bool(line_data[26+i]) for i in range(1,NProb)]
+    if form==None:
+        form = dict()
+        form["Lambda"] = 0
+        form["Kappa"] = 1
+        form["tanbeta"] = 2
+        form["mu"] = 3
+        form["Alambda"] = 4
+        form["Akappa"] = 5
+        form["M1"] = 6
+        form["M2"] = 7
+        form["M3"] = 8
+        form["MA"] = 9
+        form["MP"] = 10
+        form["h1_mass"] = 11
+        form["h2_mass"] = 13
+        form["h3_mass"] = 15
+        form["chi1_mass"] = 22
+        form["omg"] = 26
+        for i in range(1,NProb):
+            form["PROB%d"%i] = 26+i
+        form["IFAIL"] = 80
+
+    for (k, v) in form:
+        point[k] = line_data[v]
+
+    point["IFAIL"] = int(point["IFAIL"])
+    #point["Lambda"] = line_data[0]
+    #point["Kappa"] = line_data[1]
+    #point["tanbeta"] = line_data[2]
+    #point["mu"] = line_data[3]
+    #point["Alambda"] = line_data[4]
+    #point["Akappa"] = line_data[5]
+    #point["M1"] = line_data[6]
+    #point["M2"] = line_data[7]
+    #point["M3"] = line_data[8]
+    #point["MA"] = line_data[9]
+    #point["MP"] = line_data[10]
+    #point["h1_mass"] = line_data[11]
+    #point["h2_mass"] = line_data[13]
+    #point["h3_mass"] = line_data[15]
+    #point["chi1_mass"] = line_data[22]
+    #point["omg"] = line_data[26]
+    #point["IFAIL"] = int(line_data[80])
+    #probs = [bool(line_data[26+i]) for i in range(1,NProb)]
+    probs = list()
+    for i in range(1,NProb):
+        probs.append(point["PROB%d" % i])
     point["PROB"] = bool2int(probs)
 
     point.append()
