@@ -52,6 +52,11 @@ for i in range(1,NProb):
     format_nmhdecay["PROB%d"%i] = 26+i
 
 format_nmspec = dict()
+format_nmspec["Lambda"] = 0
+format_nmspec["Kappa"] = 7
+format_nmspec["tanbeta"] = 1
+format_nmhdecay["h1_mass"] = 9
+format_nmhdecay["chi1_mass"] = 20
 format_nmspec["IFAIL"]=78
 
 #for i in range(1,NProb):
