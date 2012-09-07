@@ -31,6 +31,29 @@ NMSSMPoint = {
 }
 NProb = 54
 
+format_nmhdecay = dict()
+format_nmhdecay["Lambda"] = 0
+format_nmhdecay["Kappa"] = 1
+format_nmhdecay["tanbeta"] = 2
+format_nmhdecay["mu"] = 3
+format_nmhdecay["Alambda"] = 4
+format_nmhdecay["Akappa"] = 5
+format_nmhdecay["M1"] = 6
+format_nmhdecay["M2"] = 7
+format_nmhdecay["M3"] = 8
+format_nmhdecay["MA"] = 9
+format_nmhdecay["MP"] = 10
+format_nmhdecay["h1_mass"] = 11
+format_nmhdecay["h2_mass"] = 13
+format_nmhdecay["h3_mass"] = 15
+format_nmhdecay["chi1_mass"] = 22
+format_nmhdecay["omg"] = 26
+for i in range(1,NProb):
+    format_nmhdecay["PROB%d"%i] = 26+i
+
+format_nmspec = dict()
+format_nmspec["IFAIL"]=78
+
 #for i in range(1,NProb):
 #    NMSSMPoint["PROB%d"%i] = tables.BoolCol()
 
@@ -40,39 +63,22 @@ def bool2int(x):
         if j: y += 1<<i
     return y
 
-def process_line(point, line, form=None):
+def process_line(point, line, form=format_nmhdecay):
     try:
         line_data = map(float, line.split())
     except ValueError:
+        print "malformed line: %s" % line
         return
 
-    if not len(line_data)==81:
+#    if not len(line_data)==81:
+#        return
+
+    try:
+        for (k, v) in form.items():
+            point[k] = line_data[v]
+    except:
+        print "malformed line: %s" % line
         return
-
-    if form==None:
-        form = dict()
-        form["Lambda"] = 0
-        form["Kappa"] = 1
-        form["tanbeta"] = 2
-        form["mu"] = 3
-        form["Alambda"] = 4
-        form["Akappa"] = 5
-        form["M1"] = 6
-        form["M2"] = 7
-        form["M3"] = 8
-        form["MA"] = 9
-        form["MP"] = 10
-        form["h1_mass"] = 11
-        form["h2_mass"] = 13
-        form["h3_mass"] = 15
-        form["chi1_mass"] = 22
-        form["omg"] = 26
-        for i in range(1,NProb):
-            form["PROB%d"%i] = 26+i
-        form["IFAIL"] = 80
-
-    for (k, v) in form:
-        point[k] = line_data[v]
 
     point["IFAIL"] = int(point["IFAIL"])
     #point["Lambda"] = line_data[0]
@@ -95,8 +101,11 @@ def process_line(point, line, form=None):
     #probs = [bool(line_data[26+i]) for i in range(1,NProb)]
     probs = list()
     for i in range(1,NProb):
-        probs.append(point["PROB%d" % i])
-    point["PROB"] = bool2int(probs)
+        p = "PROB%d" % i
+        if p in point:
+            probs.append(point["PROB%d" % i])
+    if len(probs)==NProb-1:
+        point["PROB"] = bool2int(probs)
 
     point.append()
     return
@@ -113,7 +122,7 @@ def process_file(infn):
     lines = True
     while lines:
         lines = f.readlines(100000000)
-        map(lambda x: process_line(point, x), lines)
+        map(lambda x: process_line(point, x, form=format_nmspec), lines)
     f.close()
     t1 = time.time()
     elapsed = t1-t0
@@ -126,12 +135,16 @@ if __name__=="__main__":
     outdir = sys.argv[2]
     if outdir[-1]!="/": outdir += "/"
 
-    print "Input files"
+    print "Input files: %d" % len(files)
     for f in files:
         print f
     print 80*"-"
 
-    p = Pool(int(sys.argv[3]))
-    res = p.map(process_file, files)
+    ncores = int(sys.argv[3])
+    if ncores>1:
+        p = Pool(int(sys.argv[3]))
+        res = p.map(process_file, files)
+    else:
+        res = map(process_file, files)
     print res
     print "All done"
