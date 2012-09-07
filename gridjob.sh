@@ -8,10 +8,13 @@ OUTDIR=/afs/cern.ch/user/j/jpata/work/public/
 
 cp -R $BASEDIR $NMSSMDIR
 cd $NMSSMDIR
+make clean
+make init
 make
 cat inp.template | sed "s/SEEDVAL/$RANDOM/" > randinp_$TAG.dat 
 cd main
-./nmspec_rand < ../randinp_$TAG.dat | grep "[\d\s\+-E\.]+" | bzcat -z9 > ../randout_$TAG.dat.bz2
+#./nmspec_rand < ../randinp_$TAG.dat | grep "[\d\s\+-E\.]+" | bzcat -z9 > ../randout_$TAG.dat.bz2
+./nmspec_rand < ../randinp_$TAG.dat | grep "[\dE]+" | bzcat -z9 > ../randout_$TAG.dat.bz2
 cd ..
 rsync randout_$TAG.dat.bz2 $OUTDIR/
 rm -Rf $NMSSMDIR
