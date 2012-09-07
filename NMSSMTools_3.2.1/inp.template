@@ -23,15 +23,15 @@ BLOCK SMINPUTS
 
 BLOCK MINPAR
 #	0	1000.D0		# MSUSY (If =/= SQRT(2*MQ1+MU1+MD1)/2)
-	17	300.D0		# M0_min
+	17	50.D0		# M0_min
 	18	5000.D0		# M0_max (If =/= min)
-	27	400.D0		# M12_min
+	27	50.D0		# M12_min
 	28	5000.D0		# M12_max (If =/= min)
 	37	1.D0		# TANB_min at MZ
 	38	50.D0		# TANB_max at MZ (If =/= min)
 #	4	1.D0		# SIGMU (If KAPPA or MUEFF are not input)
 	57	-5000.D0	# A0_min
-	58	-500.D0		# A0_max (If =/= min)
+	58	0.D0		# A0_max (If =/= min)
 
 BLOCK EXTPAR
 #	107	400.D0		# M1_min at MGUT (If =/= M12)
@@ -49,10 +49,10 @@ BLOCK EXTPAR
 #	228	1.D6		# MHU^2_max at MGUT
 #				 (If =/= min and MUEFF is not an input)
 	617	1.D-3		# LAMBDA_min at MSUSY
-	618	1.D-1		# LAMBDA_max at MSUSY (If =/= min)
-	627	2.D-3		# KAPPA_min at MSUSY
+	618	1.D0		# LAMBDA_max at MSUSY (If =/= min)
+	627	1.D-3		# KAPPA_min at MSUSY
 #				 (MUEFF must be given, MHU and MHD are computed)
-	628	5.D-1		# KAPPA_max at MSUSY (If =/= min)
+	628	5.D0		# KAPPA_max at MSUSY (If =/= min)
 #				 (MUEFF must be given, MHU and MHD are computed)
 	637	-5000.D0		# ALAMBDA_min at MGUT (If =/= A0)
 	638	0.D0		# ALAMBDA_max at MGUT (If =/= min)
@@ -64,5 +64,5 @@ BLOCK EXTPAR
 #				 (KAPPA must be given, MHU and MHD are computed)
 
 BLOCK STEPS
-	0	1000	# NTOT
+	0	1000000	# NTOT
 	1	SEEDVAL		# ISEED
