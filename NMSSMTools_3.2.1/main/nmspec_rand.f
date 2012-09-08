@@ -1579,9 +1579,10 @@ c      PROB(52)=DDIM(1d0,M12/CMS_SUSY(M0))
       ENDIF
        
       IF(ITOT.EQ.NTOT.OR.IDIM.EQ.IMAX)THEN
-       OPEN(UNIT=9,FILE='out.txt')
+       OPEN(UNIT=9,FILE='out.bin', form='unformatted')
+       WRITE(9)(IDIM)
        DO I=1,IDIM
-        WRITE(9,10)(RES(I,J),J=1,79)
+        WRITE(9)(RES(I,J),J=1,79)
  10     FORMAT(79E16.8)
        ENDDO
        IF(IDIM.EQ.IMAX)IDIM=0
