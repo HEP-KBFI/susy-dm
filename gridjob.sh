@@ -15,7 +15,8 @@ cat inp.template | sed "s/SEEDVAL/$RANDOM/" > randinp_$TAG.dat
 cd main
 #./nmspec_rand < ../randinp_$TAG.dat | grep "[\d\s\+-E\.]+" | bzcat -z9 > ../randout_$TAG.dat.bz2
 ./nmspec_rand < ../randinp_$TAG.dat 
-cat out.txt | grep "[\dE]+" | bzip2 -c9 > ../randout_$TAG.dat.bz2
+#cat out.txt | grep "[\dE]+" | bzip2 -c9 > ../randout_$TAG.dat.bz2
+mv out.bin randout_$TAG.bin
+rsync randout_$TAG.bin $OUTDIR/
 cd ..
-rsync randout_$TAG.dat.bz2 $OUTDIR/
 rm -Rf $NMSSMDIR
