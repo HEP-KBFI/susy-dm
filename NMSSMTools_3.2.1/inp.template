@@ -64,5 +64,5 @@ BLOCK EXTPAR
 #				 (KAPPA must be given, MHU and MHD are computed)
 
 BLOCK STEPS
-	0	1000000	# NTOT
+	0	10000	# NTOT
 	1	SEEDVAL		# ISEED
